@@ -1,5 +1,6 @@
 package gible.exception;
 
+import gible.exception.error.ErrorType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
