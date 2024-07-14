@@ -39,6 +39,8 @@ public class User {
     @Column(name = "donate_count")
     private int donateCount;
 
+    private int point;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
