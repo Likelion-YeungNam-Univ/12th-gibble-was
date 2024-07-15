@@ -11,7 +11,7 @@ public record PostDetailRes(
         int donatedCare,
         String writer
 ) {
-    public static PostDetailRes from(Post post) {
+    public static PostDetailRes fromEntity(Post post) {
         return new PostDetailRes(
                 post.getTitle(), post.getContent(), post.getAddress(),
                 post.getName(), post.getWantedCard(), post.getDonatedCare(),

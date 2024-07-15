@@ -9,7 +9,7 @@ public record PostSummaryRes(
         LocalDateTime createdAt,
         String writer
 ) {
-    public static PostSummaryRes from(Post post) {
+    public static PostSummaryRes fromEntity(Post post) {
         return new PostSummaryRes(post.getTitle(), post.getCreatedAt(), post.getWriter().getNickname());
     }
 }
