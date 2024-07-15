@@ -4,12 +4,14 @@ import gible.domain.donation.entity.Donation;
 import gible.domain.participate.entity.Participate;
 import gible.domain.post.entity.Post;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ public class User {
     private String name;
 
     @NotNull
+    @Email
     private String email;
 
     @NotNull
@@ -45,16 +48,16 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
-    private List<Donation> donationsSent;
+    private List<Donation> donationsSent = new ArrayList<>();
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.REMOVE)
-    private List<Donation> donationsReceived;
+    private List<Donation> donationsReceived = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Participate> participates;
+    private List<Participate> participates = new ArrayList<>();
 
     @Builder
     public User(String name, String email, String nickname, String phoneNumber, Role role) {

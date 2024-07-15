@@ -12,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,7 +54,7 @@ public class Post {
     private User writer;
 
     @OneToMany(mappedBy = "post")
-    private List<Donation> donations;
+    private List<Donation> donations = new ArrayList<>();
 
     @Builder
     public Post(String title, String content, String address, String name, int wantedCard, User writer) {

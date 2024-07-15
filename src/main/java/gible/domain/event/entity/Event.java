@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class Event {
     private String imageUrl;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
-    private List<Participate> participates;
+    private List<Participate> participates = new ArrayList<>();
 
     @Builder
     public Event(String title, String content, String imageUrl) {
