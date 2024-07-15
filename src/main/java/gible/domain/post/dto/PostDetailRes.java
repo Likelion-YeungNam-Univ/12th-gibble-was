@@ -9,12 +9,13 @@ public record PostDetailRes(
         String name,
         int wantedCard,
         int donatedCare,
+        String phoneNumber,
         String writer
 ) {
     public static PostDetailRes fromEntity(Post post) {
         return new PostDetailRes(
                 post.getTitle(), post.getContent(), post.getAddress(),
                 post.getName(), post.getWantedCard(), post.getDonatedCare(),
-                post.getWriter().getName());
+                post.getWriter().getPhoneNumber(), post.getWriter().getName());
     }
 }

@@ -1,6 +1,7 @@
 package gible.domain.post.entity;
 
 import gible.domain.donation.entity.Donation;
+import gible.domain.post.dto.PostReq;
 import gible.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -64,5 +65,20 @@ public class Post {
         this.name = name;
         this.wantedCard = wantedCard;
         this.writer = writer;
+    }
+
+    /* 게시글 업데이트 */
+    public void updatePost(PostReq postReq) {
+        this.title = postReq.title();
+        this.content = postReq.content();
+        this.address = postReq.address();
+        this.name = postReq.name();
+        this.wantedCard = postReq.wantedCard();
+    }
+
+    /* 작성자 할당 */
+    public void addWriter(User writer) {
+        this.writer = writer;
+        this.writer.getPosts().add(this);
     }
 }
