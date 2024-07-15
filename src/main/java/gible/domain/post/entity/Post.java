@@ -75,4 +75,10 @@ public class Post {
         this.name = postReq.name();
         this.wantedCard = postReq.wantedCard();
     }
+
+    /* 작성자 할당 */
+    public void setWriter(User writer) {
+        this.writer = writer;
+        this.writer.getPosts().add(this);
+    }
 }
