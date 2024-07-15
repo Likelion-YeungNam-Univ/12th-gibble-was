@@ -77,7 +77,7 @@ public class Post {
     }
 
     /* 작성자 할당 */
-    public void setWriter(User writer) {
+    public void addWriter(User writer) {
         this.writer = writer;
         this.writer.getPosts().add(this);
     }
