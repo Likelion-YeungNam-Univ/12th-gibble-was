@@ -32,7 +32,7 @@ public class PostService {
                 new CustomException(ErrorType.USER_NOT_FOUND));
 
         Post post = postReq.toEntity(postReq);
-        post.setWriter(foundUser);
+        post.addWriter(foundUser);
         postRepository.save(post);
     }
 
@@ -75,9 +75,6 @@ public class PostService {
     @Transactional
     public void deletePost(UUID postId) {
 
-        Post foundPost = postRepository.findById(postId).orElseThrow(() ->
-                new CustomException(ErrorType.POST_NOT_FOUND));
-
-        postRepository.delete(foundPost);
+        postRepository.deleteById(postId);
     }
 }
