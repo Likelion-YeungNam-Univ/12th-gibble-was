@@ -96,7 +96,7 @@ public class PostServiceTest {
     void savePostTest() {
         // given
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        Post post = postReq.toEntity(postReq, user);
+        Post post = postReq.toEntity(postReq);
         when(postRepository.save(any(Post.class))).thenReturn(post);
 
         // when
