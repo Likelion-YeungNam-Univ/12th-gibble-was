@@ -265,23 +265,4 @@ public class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response").value("게시글 삭제 완료."));
     }
-
-    @Test
-    @DisplayName("게시글 삭제 실패 테스트 - 존재하지 않는 게시글")
-    void deletePostFailedByPostNotFoundTest() throws Exception {
-        // given
-        doThrow(new CustomException(ErrorType.POST_NOT_FOUND)).when(postService).deletePost(postId);
-
-        // when
-        ResultActions resultActions = mockMvc.perform(
-                delete("/post/{postId}", postId)
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        // then
-        resultActions
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value(ErrorType.POST_NOT_FOUND.getMessage()));
-    }
 }

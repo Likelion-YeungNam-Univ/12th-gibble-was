@@ -223,12 +223,11 @@ public class PostServiceTest {
     @DisplayName("게시글 삭제 테스트")
     void deletePostTest() {
         // given
-        given(postRepository.findById(postId)).willReturn(Optional.ofNullable(post1));
 
         // when
         postService.deletePost(postId);
 
         // then
-        verify(postRepository, times(1)).delete(any(Post.class));
+        verify(postRepository, times(1)).deleteById(postId);
     }
 }
