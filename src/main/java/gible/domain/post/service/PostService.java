@@ -31,8 +31,8 @@ public class PostService {
         User foundUser = userRepository.findById(userId).orElseThrow(() ->
                 new CustomException(ErrorType.USER_NOT_FOUND));
 
-        Post post = postReq.toEntity(postReq, foundUser);
-
+        Post post = postReq.toEntity(postReq);
+        post.setWriter(foundUser);
         postRepository.save(post);
     }
 
