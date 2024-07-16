@@ -21,10 +21,12 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests.requestMatchers(
-                                "/auth"//라우팅 아직 설정x
-                        ).permitAll()
-                .anyRequest().authenticated())
+                                        "/auth/kakao",
+                                        "/auth/token"//라우팅 아직 설정x
+                                ).permitAll()
+                                .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
 }
