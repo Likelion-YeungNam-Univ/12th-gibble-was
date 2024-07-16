@@ -81,4 +81,9 @@ public class Post {
         this.writer = writer;
         this.writer.getPosts().add(this);
     }
+
+    /* 게시글에 기부한 개수 업데이트 */
+    public void updateDonatedCare(int donatedCare) {
+        this.donatedCare += donatedCare;
+    }
 }
