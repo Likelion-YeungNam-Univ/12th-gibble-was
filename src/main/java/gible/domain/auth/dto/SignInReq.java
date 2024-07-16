@@ -4,10 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record SignInReq(
         @NotBlank
-        String OauthId,
+        String code,
         @NotBlank
-        String idToken,
-        @NotBlank
-        String nonce
+        String clientId
         ) {
 }
