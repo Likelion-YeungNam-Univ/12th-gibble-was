@@ -1,39 +1,30 @@
 package gible.domain.security.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import gible.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityUserDetails implements UserDetails {
 
-    private Long userId;
-    private String username;
-    private boolean accountNonLocked;
+    private User user;
     private Collection<? extends GrantedAuthority> authorities;
 
-    @JsonIgnore
-    private String password;
-    @JsonIgnore
-    private boolean enabled;
-    @JsonIgnore
-    private boolean accountNonExpired;
-    @JsonIgnore
-    private boolean credentialsNonExpired;
 
     @Builder
-    private SecurityUserDetails(Long userId, String username, Collection<? extends GrantedAuthority> authorities, boolean accountNonLocked) {
-        this.userId = userId;
-        this.username = username;
-        this.authorities = authorities;
-        this.accountNonLocked = accountNonLocked;
+    SecurityUserDetails(User user) {
+        this.user = user;
+        this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().getValue()));
     }
 
     @Override
@@ -48,12 +39,12 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getName();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        throw new UnsupportedOperationException();
     }
 
     @Override

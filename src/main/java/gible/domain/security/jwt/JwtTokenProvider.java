@@ -1,6 +1,8 @@
 package gible.domain.security.jwt;
 
 
+import gible.domain.security.common.SecurityUserDetails;
+import gible.domain.user.repository.UserRepository;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
@@ -8,6 +10,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -21,6 +24,7 @@ public class JwtTokenProvider {
     private final long expiration;
     private final String issuer;
     private final UserService userService;
+
     public JwtTokenProvider(
     @Value("${jwt.secret}") final String SECERT_KEY,
     @Value("${jwt.expiration}") final long EXPIRATION,
@@ -46,11 +50,8 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public Authentication getAuthentication(String token) {
-        
-    }
 
-    private Claims parseClaims(String accessToken){
+    protected Claims parseClaims(String accessToken){
         return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
