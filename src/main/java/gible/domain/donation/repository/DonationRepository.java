@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface DonationRepository extends JpaRepository<Donation, UUID> {
 
     List<Donation> findByPost_Id(UUID postId);
-    List<Donation> findBySender_Id(UUID userId);
-    List<Donation> findByReceiver_Id(UUID userId);
+    List<Donation> findBySender_Email(String email);
+    List<Donation> findByReceiver_Email(String email);
 }

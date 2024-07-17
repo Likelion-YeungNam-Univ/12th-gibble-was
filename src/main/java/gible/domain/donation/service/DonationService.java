@@ -29,9 +29,9 @@ public class DonationService {
 
     /* 기부하기 */
     @Transactional
-    public void donate(DonationReq donationReq, UUID userId, UUID postId) {
+    public void donate(DonationReq donationReq, String email, UUID postId) {
 
-        User foundUser = userRepository.findById(userId).orElseThrow(() ->
+        User foundUser = userRepository.findByEmail(email).orElseThrow(() ->
                 new CustomException(ErrorType.USER_NOT_FOUND));
 
         Post foundPost = postRepository.findById(postId).orElseThrow(() ->
@@ -54,18 +54,18 @@ public class DonationService {
 
     /* 기부한 게시글에 대한 정보 불러오기 */
     @Transactional(readOnly = true)
-    public List<DonationPostInfoRes> getPostDonationDetails(UUID userId) {
+    public List<DonationPostInfoRes> getPostDonationDetails(String email) {
 
-        List<Donation> donations = donationRepository.findBySender_Id(userId);
+        List<Donation> donations = donationRepository.findBySender_Email(email);
 
         return donations.stream().map(DonationPostInfoRes::fromEntity).collect(Collectors.toList());
     }
 
     /* 기부해준 사람들의 목록 불러오기 */
     @Transactional(readOnly = true)
-    public List<DonationSenderInfoRes> getDonorsList(UUID userId) {
+    public List<DonationSenderInfoRes> getDonorsList(String email) {
 
-        List<Donation> donations = donationRepository.findByReceiver_Id(userId);
+        List<Donation> donations = donationRepository.findByReceiver_Email(email);
 
         return donations.stream().map(DonationSenderInfoRes::fromEntity).collect(Collectors.toList());
     }

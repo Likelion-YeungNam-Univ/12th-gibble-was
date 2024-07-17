@@ -29,8 +29,8 @@ public class PostController {
     @PostMapping("/upload")
     public ResponseEntity<?> savePost(@Valid @RequestBody PostReq postReq,
                                       @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시로 userDetails.getUsername()을 UUID로 바꿈. 추후에 auth 완료되면 수정필요.
-        postService.savePost(postReq, UUID.fromString(userDetails.getUsername()));
+
+        postService.savePost(postReq, userDetails.getUsername());
         return ResponseEntity.created(null).body(ApiUtil.from("게시글 업로드 완료."));
     }
 

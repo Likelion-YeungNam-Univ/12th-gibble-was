@@ -26,8 +26,8 @@ public class DonationController {
     public ResponseEntity<?> donate(@Valid @RequestBody DonationReq donationReq,
                                     @PathVariable UUID postId,
                                     @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시로 userDetails.getUsername()을 UUID로 바꿈. 추후에 auth 완료되면 수정필요.
-        donationService.donate(donationReq, UUID.fromString(userDetails.getUsername()), postId);
+
+        donationService.donate(donationReq, userDetails.getUsername(), postId);
         return ResponseEntity.ok(ApiUtil.from("기부 성공."));
     }
 
@@ -42,15 +42,15 @@ public class DonationController {
     @GetMapping("/donation/my-donation")
     public List<DonationPostInfoRes> getPostDonationDetails(
             @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시로 userDetails.getUsername()을 UUID로 바꿈. 추후에 auth 완료되면 수정필요.
-        return donationService.getPostDonationDetails(UUID.fromString(userDetails.getUsername()));
+
+        return donationService.getPostDonationDetails(userDetails.getUsername());
     }
 
     /* 기부해준 사람들의 목록 불러오기 */
     @GetMapping("/donation/received-donation")
     public List<DonationSenderInfoRes> getDonorsList(
             @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시로 userDetails.getUsername()을 UUID로 바꿈. 추후에 auth 완료되면 수정필요.
-        return donationService.getDonorsList(UUID.fromString(userDetails.getUsername()));
+
+        return donationService.getDonorsList(userDetails.getUsername());
     }
 }

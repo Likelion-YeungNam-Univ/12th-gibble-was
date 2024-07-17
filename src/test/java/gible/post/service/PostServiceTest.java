@@ -46,7 +46,7 @@ public class PostServiceTest {
     private User user;
 
     private PostReq postReq;
-    private UUID userId;
+    private String userEmail;
     private UUID postId;
 
     private Post post1;
@@ -56,7 +56,7 @@ public class PostServiceTest {
     @BeforeEach
     void setUp() {
         this.postReq = new PostReq("제목", "내용", "주소", "작성자", 20);
-        this.userId = UUID.randomUUID();
+        this.userEmail = "test@gmail.com";
         this.postId = UUID.randomUUID();
 
         createPost();
@@ -95,15 +95,15 @@ public class PostServiceTest {
     @DisplayName("게시글 작성 성공 테스트")
     void savePostTest() {
         // given
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
         Post post = postReq.toEntity(postReq);
         when(postRepository.save(any(Post.class))).thenReturn(post);
 
         // when
-        postService.savePost(postReq, userId);
+        postService.savePost(postReq, userEmail);
 
         // then
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByEmail(userEmail);
         verify(postRepository, times(1)).save(any(Post.class));
     }
 
@@ -111,16 +111,16 @@ public class PostServiceTest {
     @DisplayName("게시글 작성 실패 테스트 - 사용자 없음")
     void savePostFailedByUserNotFoundTest() {
         // given
-        when(userRepository.findById(userId)).thenThrow(new CustomException(ErrorType.USER_NOT_FOUND));
+        when(userRepository.findByEmail(userEmail)).thenThrow(new CustomException(ErrorType.USER_NOT_FOUND));
 
         // when
         CustomException exception = assertThrows(CustomException.class, () -> {
-            postService.savePost(postReq, userId);
+            postService.savePost(postReq, userEmail);
         });
 
         // then
         assertEquals(ErrorType.USER_NOT_FOUND, exception.getErrortype());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByEmail(userEmail);
     }
 
     @Test

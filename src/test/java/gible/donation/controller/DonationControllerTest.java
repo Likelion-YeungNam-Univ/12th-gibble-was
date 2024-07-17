@@ -5,6 +5,7 @@ import gible.domain.donation.dto.DonationSenderInfoRes;
 import gible.domain.donation.entity.Donation;
 import gible.domain.donation.service.DonationService;
 import gible.domain.post.entity.Post;
+import gible.domain.security.jwt.JwtAuthenticationFilter;
 import gible.domain.user.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +38,9 @@ public class DonationControllerTest {
 
     @MockBean
     private DonationService donationService;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Mock
     private User user1;

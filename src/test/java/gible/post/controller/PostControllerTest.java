@@ -7,6 +7,7 @@ import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
 import gible.domain.post.entity.Post;
 import gible.domain.post.service.PostService;
+import gible.domain.security.jwt.JwtAuthenticationFilter;
 import gible.domain.user.entity.User;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
@@ -51,6 +52,9 @@ public class PostControllerTest {
 
     @MockBean
     private PostService postService;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Mock
     private User user;
@@ -98,26 +102,6 @@ public class PostControllerTest {
                 .writer(user)
                 .build();
     }
-
-
-    /*@Test
-    @DisplayName("게시글 업로드 성공 테스트")
-    void savePostTest() throws Exception {
-        // given
-        PostReq postReq = new PostReq("제목", "내용", "주소", "이름", 20);
-
-        // when
-        ResultActions resultActions = mockMvc.perform(
-                post("/post/upload")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postReq))
-        );
-
-        // then
-        resultActions
-                .andExpect(status().isCreated())
-                .andDo(print());
-    }*/
 
     @Test
     @DisplayName("전체 게시글 불러오기 테스트")
