@@ -3,7 +3,10 @@ package gible.domain.auth.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gible.config.KakaoConfig;
+import gible.domain.auth.dto.KakaoUserInfo;
 import gible.domain.auth.dto.SignInReq;
+import gible.exception.CustomException;
+import gible.exception.error.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JsonParser;
@@ -44,16 +47,38 @@ public class KakaoService {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
             return jsonNode.get("access_token").asText();
-
         } catch(Exception e){
-            e.printStackTrace();
+            throw new CustomException(ErrorType.SOCIAL_LOGIN_FAILED);
         }
     }
 
-    public void getUserInfo(String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-        headers.add("Content-Type", HEADER_VALUE);
-        RestTemplate restTemplate = new RestTemplate();
+    public KakaoUserInfo getUserInfo(String accessToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + accessToken);
+            headers.add("Content-Type", HEADER_VALUE);
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<String> kakaoUserInfoRequest = new HttpEntity<>(headers);
+            ResponseEntity<String> response = restTemplate.exchange(
+                    kakaoConfig.getGetUserInfoUri(),
+                    HttpMethod.GET,
+                    kakaoUserInfoRequest,
+                    String.class
+            );
+
+            String responseBody = response.getBody();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode userInfo = objectMapper.readTree(responseBody).get("kakao_account");
+            System.out.println(userInfo);
+
+            String email = userInfo.get("email").asText();
+            String name = userInfo.get("name").asText();
+            String phoneNumber = userInfo.get("phone_number").asText();
+
+            return KakaoUserInfo.from(email, name, phoneNumber);
+        } catch (Exception e){
+            throw new CustomException(ErrorType.SOCIAL_LOGIN_FAILED);
+        }
     }
 }

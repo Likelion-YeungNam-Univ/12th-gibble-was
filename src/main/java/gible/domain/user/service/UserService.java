@@ -17,4 +17,8 @@ public class UserService {
     public User findById(UUID userId){
         return userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorType.USER_NOT_FOUND));
     }
+
+    public boolean isExist(String email){
+        return userRepository.findByEmail(email).isPresent();
+    }
 }
