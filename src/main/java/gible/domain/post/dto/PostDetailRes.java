@@ -2,7 +2,10 @@ package gible.domain.post.dto;
 
 import gible.domain.post.entity.Post;
 
+import java.util.UUID;
+
 public record PostDetailRes(
+        UUID postId,
         String title,
         String content,
         String address,
@@ -14,7 +17,7 @@ public record PostDetailRes(
 ) {
     public static PostDetailRes fromEntity(Post post) {
         return new PostDetailRes(
-                post.getTitle(), post.getContent(), post.getAddress(),
+                post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
                 post.getName(), post.getWantedCard(), post.getDonatedCare(),
                 post.getWriter().getPhoneNumber(), post.getWriter().getName());
     }
