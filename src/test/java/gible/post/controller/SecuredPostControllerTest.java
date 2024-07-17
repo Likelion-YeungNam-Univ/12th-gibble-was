@@ -89,4 +89,28 @@ public class SecuredPostControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.response").value("게시글 업로드 완료."));
     }
+
+    @Test
+    @DisplayName("게시글 업로드 실패 테스트 - 조건 불충족")
+    void savePostInvalidTest() throws Exception {
+        // given
+        PostReq postReq = new PostReq("", "", "", "", 0);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                post("/post/upload")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(user(userDetails))
+                        .content(objectMapper.writeValueAsString(postReq))
+        );
+
+        // then
+        resultActions
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("제목은 필수 작성 항목입니다."))
+                .andExpect(jsonPath("$.content").value("내용은 필수 작성 항목입니다."))
+                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."))
+                .andExpect(jsonPath("$.name").value("이름은 필수 작성 항목입니다."));
+    }
 }
