@@ -4,7 +4,6 @@ spring:
     url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,3 +14,9 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
         dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration: ${JWT_ACCESS_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+  issuer: ${JWT_ISSUER}
