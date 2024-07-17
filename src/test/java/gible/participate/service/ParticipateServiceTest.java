@@ -2,6 +2,7 @@ package gible.participate.service;
 
 import gible.domain.event.entity.Event;
 import gible.domain.event.repository.EventRepository;
+import gible.domain.participate.dto.ParticipationEventRes;
 import gible.domain.participate.entity.Participate;
 import gible.domain.participate.repository.ParticipateRepository;
 import gible.domain.participate.service.ParticipateService;
@@ -17,11 +18,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -44,18 +45,44 @@ public class ParticipateServiceTest {
     private User user;
 
     @Mock
-    private Event event;
-
-    @Mock
     private Participate participate;
 
     private String userEmail;
     private UUID eventId;
 
+    private Event event1;
+    private Event event2;
+    private Participate participate1;
+    private Participate participate2;
+
     @BeforeEach
     void setUp() {
         this.userEmail = "test@gmail.com";
         this.eventId = UUID.randomUUID();
+
+        createParticipate();
+    }
+
+    private void createParticipate() {
+        this.event1 = Event.builder()
+                .title("이벤트1")
+                .content("내용1")
+                .build();
+
+        this.event2 = Event.builder()
+                .title("이벤트2")
+                .content("내용2")
+                .build();
+
+        this.participate1 = Participate.builder()
+                .user(user)
+                .event(event1)
+                .build();
+
+        this.participate2 = Participate.builder()
+                .user(user)
+                .event(event2)
+                .build();
     }
 
     @Test
@@ -63,7 +90,7 @@ public class ParticipateServiceTest {
     void participationEventTest() {
         // given
         when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
-        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event1));
         when(participateRepository.save(any(Participate.class))).thenReturn(participate);
 
         // when
@@ -107,5 +134,28 @@ public class ParticipateServiceTest {
         assertEquals(exception.getErrortype(), ErrorType.EVENT_NOT_FOUND);
         verify(userRepository, times(1)).findByEmail(userEmail);
         verify(eventRepository, times(1)).findById(eventId);
+    }
+
+    @Test
+    @DisplayName("참여한 이벤트 조회 테스트")
+    void getAllParticipationEventsTest() {
+        // given
+        List<Participate> participates = List.of(
+                participate1, participate2
+        );
+
+        when(participateRepository.findByUser_Email(userEmail)).thenReturn(participates);
+
+        // when
+        List<ParticipationEventRes> participationEventList =
+                participateService.getAllParticipationEvents(userEmail);
+
+        // then
+        assertNotNull(participationEventList);
+        assertEquals(2, participationEventList.size());
+        assertEquals(event1.getId(), participationEventList.get(0).event().eventId());
+        assertEquals(event1.getTitle(), participationEventList.get(0).event().title());
+        assertEquals(event2.getId(), participationEventList.get(1).event().eventId());
+        assertEquals(event2.getTitle(), participationEventList.get(1).event().title());
     }
 }
