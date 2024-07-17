@@ -18,7 +18,7 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorType.USER_NOT_FOUND));
     }
 
-    public boolean isExist(String email){
-        return userRepository.findByEmail(email).isPresent();
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(()-> new CustomException(ErrorType.USER_NOT_FOUND));
     }
 }

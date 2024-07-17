@@ -2,6 +2,7 @@ package gible.domain.auth.controller;
 
 
 import gible.domain.auth.dto.SignInReq;
+import gible.domain.auth.dto.SignInRes;
 import gible.domain.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/kakaologin")
-    public ResponseEntity<?> login(@Valid @RequestBody SignInReq signInReq) {
+    public ResponseEntity<SignInRes> login(@Valid @RequestBody SignInReq signInReq) {
         return ResponseEntity.ok().body(authService.login(signInReq));
     }
 

@@ -76,7 +76,7 @@ public class KakaoService {
             String name = userInfo.get("name").asText();
             String phoneNumber = userInfo.get("phone_number").asText();
 
-            return KakaoUserInfo.from(email, name, phoneNumber);
+            return KakaoUserInfo.of(email, name, phoneNumber);
         } catch (Exception e){
             throw new CustomException(ErrorType.SOCIAL_LOGIN_FAILED);
         }

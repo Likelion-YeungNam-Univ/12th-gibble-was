@@ -5,7 +5,7 @@ public record KakaoUserInfo(
         String name,
         String phoneNumber
 ) {
-    public static KakaoUserInfo from(String email, String name, String phoneNumber) {
+    public static KakaoUserInfo of(String email, String name, String phoneNumber) {
         return new KakaoUserInfo(email, name, phoneNumber);
     }
 }
