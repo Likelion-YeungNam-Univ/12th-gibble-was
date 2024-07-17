@@ -232,6 +232,29 @@ public class PostControllerTest {
     }
 
     @Test
+    @DisplayName("게시글 수정 실패 테스트 - 조건 불충족")
+    void updatePostInvalidTest() throws Exception {
+        // given
+        PostReq postReq = new PostReq("", "", "", "", 0);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                put("/post/upload/{postId}", postId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postReq))
+        );
+
+        // then
+        resultActions
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("제목은 필수 작성 항목입니다."))
+                .andExpect(jsonPath("$.content").value("내용은 필수 작성 항목입니다."))
+                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."))
+                .andExpect(jsonPath("$.name").value("이름은 필수 작성 항목입니다."));
+    }
+
+    @Test
     @DisplayName("게시글 삭제 성공 테스트")
     void deletePostTest() throws Exception {
         // given
