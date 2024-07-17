@@ -25,3 +25,4 @@ oauth2:
     tokenUri: https://kauth.kakao.com/oauth/token
     clientId: eda321e5223dd5d98990c2399f445cfd
     redirectUri: http://localhost:8080/login/kakao
+    getUserInfoUri: https://kapi.kakao.com/v2/user/me

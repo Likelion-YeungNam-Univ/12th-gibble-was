@@ -12,6 +12,11 @@ public class AuthService {
     private final KakaoService kakaoService;
 
     public String login(SignInReq signInReq) {
-        kakaoService.getUserInfo(signInReq);
+        getUserInfo(signInReq);
+    }
+
+    private void getUserInfo(SignInReq signInReq) {
+        String accessToken = kakaoService.getAccessToken(signInReq);
+        kakaoService.getUserInfo(accessToken);
     }
 }
