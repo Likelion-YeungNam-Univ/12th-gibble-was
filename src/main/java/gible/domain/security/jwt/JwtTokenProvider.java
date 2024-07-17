@@ -52,19 +52,19 @@ public class JwtTokenProvider {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
         claims.put("role", user.getRole());
-        return createToken(user.getName(), claims, accessExpiration);
+        return createToken(user.getEmail(), claims, accessExpiration);
     }
 
     public String generateRefreshToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
         claims.put("role", user.getRole());
-        return createToken(user.getName(), claims, refreshExpiration);
+        return createToken(user.getEmail(), claims, refreshExpiration);
     }
 
-    public String createToken(String userName, Map<String, Object> claims, Long expiration) {
+    public String createToken(String email, Map<String, Object> claims, Long expiration) {
         return Jwts.builder()
-                .subject(userName)
+                .subject(email)
                 .issuer(issuer)
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .claims(claims)
