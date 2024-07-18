@@ -27,9 +27,9 @@ public class ParticipateService {
 
     /* 이벤트 참여 */
     @Transactional
-    public void participationEvent(String email, UUID eventId) {
+    public void participationEvent(UUID userId, UUID eventId) {
 
-        User foundUser = userRepository.findByEmail(email).orElseThrow(() ->
+        User foundUser = userRepository.findById(userId).orElseThrow(() ->
                 new CustomException(ErrorType.USER_NOT_FOUND));
 
         Event foundEvent = eventRepository.findById(eventId).orElseThrow(() ->
@@ -43,9 +43,9 @@ public class ParticipateService {
 
     /* 참여한 이벤트 조회 */
     @Transactional(readOnly = true)
-    public List<ParticipationEventRes> getAllParticipationEvents(String email) {
+    public List<ParticipationEventRes> getAllParticipationEvents(UUID userId) {
 
-        return participateRepository.findByUser_Email(email)
+        return participateRepository.findByUser_Id(userId)
                 .stream().map(ParticipationEventRes::fromEntity)
                 .collect(Collectors.toList());
     }

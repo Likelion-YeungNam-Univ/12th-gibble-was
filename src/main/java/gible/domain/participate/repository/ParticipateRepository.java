@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface ParticipateRepository extends JpaRepository<Participate, UUID> {
 
-    List<Participate> findByUser_Email(String email);
+    List<Participate> findByUser_Id(UUID userId);
 }
