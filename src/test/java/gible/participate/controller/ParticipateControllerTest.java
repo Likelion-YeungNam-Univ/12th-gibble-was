@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -50,8 +49,7 @@ public class ParticipateControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private User user;
-    private UserDetails userDetails;
-    private String userEmail;
+    private SecurityUserDetails userDetails;
     private UUID eventId;
 
     private Event event1;
@@ -75,7 +73,6 @@ public class ParticipateControllerTest {
                 .build();
 
         this.userDetails = SecurityUserDetails.builder().user(user).build();
-        userEmail = "test@gmail.com";
         this.eventId = UUID.randomUUID();
 
         createParticipate();
@@ -107,7 +104,7 @@ public class ParticipateControllerTest {
     @DisplayName("이벤트 참여 테스트")
     void participationEventTest() throws Exception {
         // given
-        doNothing().when(participateService).participationEvent(userEmail, eventId);
+        doNothing().when(participateService).participationEvent(userDetails.getId(), eventId);
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -149,7 +146,7 @@ public class ParticipateControllerTest {
                 ParticipationEventRes.fromEntity(participate2)
         );
 
-        given(participateService.getAllParticipationEvents(userEmail)).willReturn(participates);
+        given(participateService.getAllParticipationEvents(userDetails.getId())).willReturn(participates);
 
         // when
         ResultActions resultActions = mockMvc.perform(

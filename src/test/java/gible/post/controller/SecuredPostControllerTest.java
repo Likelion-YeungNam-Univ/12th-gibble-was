@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -47,7 +46,7 @@ public class SecuredPostControllerTest {
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private UserDetails userDetails;
+    private SecurityUserDetails userDetails;
 
     private User user;
 
@@ -73,7 +72,7 @@ public class SecuredPostControllerTest {
         // given
         PostReq postReq = new PostReq("제목", "내용", "주소", "이름", 20);
 
-        doNothing().when(postService).savePost(any(PostReq.class), eq(user.getEmail()));
+        doNothing().when(postService).savePost(any(PostReq.class), eq(userDetails.getId()));
 
         // when
         ResultActions resultActions = mockMvc.perform(

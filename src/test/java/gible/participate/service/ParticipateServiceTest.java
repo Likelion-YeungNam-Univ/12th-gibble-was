@@ -47,7 +47,7 @@ public class ParticipateServiceTest {
     @Mock
     private Participate participate;
 
-    private String userEmail;
+    private UUID userId;
     private UUID eventId;
 
     private Event event1;
@@ -57,7 +57,7 @@ public class ParticipateServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.userEmail = "test@gmail.com";
+        this.userId = UUID.randomUUID();
         this.eventId = UUID.randomUUID();
 
         createParticipate();
@@ -89,15 +89,15 @@ public class ParticipateServiceTest {
     @DisplayName("이벤트 참여 테스트")
     void participationEventTest() {
         // given
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(event1));
         when(participateRepository.save(any(Participate.class))).thenReturn(participate);
 
         // when
-        participateService.participationEvent(userEmail, eventId);
+        participateService.participationEvent(userId, eventId);
 
         // then
-        verify(userRepository, times(1)).findByEmail(userEmail);
+        verify(userRepository, times(1)).findById(userId);
         verify(eventRepository, times(1)).findById(eventId);
         verify(participateRepository, times(1)).save(any(Participate.class));
     }
@@ -106,33 +106,33 @@ public class ParticipateServiceTest {
     @DisplayName("이벤트 참여 실패 테스트 - 사용자 없음")
     void participationEventFailedUserNotFoundTest() {
         // given
-        when(userRepository.findByEmail(userEmail)).thenThrow(new CustomException(ErrorType.USER_NOT_FOUND));
+        when(userRepository.findById(userId)).thenThrow(new CustomException(ErrorType.USER_NOT_FOUND));
 
         // when
         CustomException exception = assertThrows(CustomException.class, () -> {
-            participateService.participationEvent(userEmail, eventId);
+            participateService.participationEvent(userId, eventId);
         });
 
         // then
         assertEquals(exception.getErrortype(), ErrorType.USER_NOT_FOUND);
-        verify(userRepository, times(1)).findByEmail(userEmail);
+        verify(userRepository, times(1)).findById(userId);
     }
 
     @Test
     @DisplayName("이벤트 참여 실패 테스트 - 이벤트 없음")
     void participationEventFailedEventNotFoundTest() {
         // given
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(eventRepository.findById(eventId)).thenThrow(new CustomException(ErrorType.EVENT_NOT_FOUND));
 
         // when
         CustomException exception = assertThrows(CustomException.class, () -> {
-            participateService.participationEvent(userEmail, eventId);
+            participateService.participationEvent(userId, eventId);
         });
 
         // then
         assertEquals(exception.getErrortype(), ErrorType.EVENT_NOT_FOUND);
-        verify(userRepository, times(1)).findByEmail(userEmail);
+        verify(userRepository, times(1)).findById(userId);
         verify(eventRepository, times(1)).findById(eventId);
     }
 
@@ -144,11 +144,11 @@ public class ParticipateServiceTest {
                 participate1, participate2
         );
 
-        when(participateRepository.findByUser_Email(userEmail)).thenReturn(participates);
+        when(participateRepository.findByUser_Id(userId)).thenReturn(participates);
 
         // when
         List<ParticipationEventRes> participationEventList =
-                participateService.getAllParticipationEvents(userEmail);
+                participateService.getAllParticipationEvents(userId);
 
         // then
         assertNotNull(participationEventList);
