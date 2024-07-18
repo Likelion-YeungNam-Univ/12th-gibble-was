@@ -22,7 +22,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests.requestMatchers(
                                         "/auth/kakao",
-                                        "/auth/token"//라우팅 아직 설정x
+                                        "/auth/token",//라우팅 아직 설정x
+                                        "/swagger-resources/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/webjars/**",
+                                        "/error"
                                 ).permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
