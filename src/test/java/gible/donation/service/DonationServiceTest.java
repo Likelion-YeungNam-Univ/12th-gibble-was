@@ -43,7 +43,7 @@ public class DonationServiceTest {
     @InjectMocks
     private DonationService donationService;
 
-    private String userEmail;
+    private UUID userId;
     private UUID postId;
 
     private Post post1;
@@ -58,7 +58,7 @@ public class DonationServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.userEmail = "test@gmail.com";
+        this.userId = UUID.randomUUID();
         this.postId = UUID.randomUUID();
         this.donationReq = new DonationReq(2);
 
@@ -105,18 +105,18 @@ public class DonationServiceTest {
     @DisplayName("기부하기 테스트")
     void donateTest() {
         // given
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user1));
         when(postRepository.findById(postId)).thenReturn(Optional.ofNullable(post1));
 
         Donation donation = DonationReq.toEntity(donationReq, user1, post1);
         when(donationRepository.save(any(Donation.class))).thenReturn(donation);
 
         // when
-        donationService.donate(donationReq, userEmail, postId);
+        donationService.donate(donationReq, userId, postId);
 
         // then
         assertEquals(2, post1.getDonatedCare());
-        verify(userRepository, times(1)).findByEmail(userEmail);
+        verify(userRepository, times(1)).findById(userId);
         verify(postRepository, times(1)).findById(postId);
         verify(donationRepository, times(1)).save(any(Donation.class));
     }
@@ -125,28 +125,28 @@ public class DonationServiceTest {
     @DisplayName("기부하기 실패 테스트 - 사용자 없음")
     void donateFailedByUserNotFoundTest () {
         // given
-        when(userRepository.findByEmail(userEmail)).thenThrow(new CustomException(ErrorType.USER_NOT_FOUND));
+        when(userRepository.findById(userId)).thenThrow(new CustomException(ErrorType.USER_NOT_FOUND));
 
         // when
         CustomException exception = assertThrows(CustomException.class, () -> {
-            donationService.donate(donationReq, userEmail, postId);
+            donationService.donate(donationReq, userId, postId);
         });
 
         // then
         assertEquals(ErrorType.USER_NOT_FOUND, exception.getErrortype());
-        verify(userRepository, times(1)).findByEmail(userEmail);
+        verify(userRepository, times(1)).findById(userId);
     }
 
     @Test
     @DisplayName("기부하기 실패 테스트 - 게시글 없음")
     void donateFailedByPostNotFoundTest() {
         // given
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user1));
         when(postRepository.findById(postId)).thenThrow(new CustomException(ErrorType.POST_NOT_FOUND));
 
         // when
         CustomException exception = assertThrows(CustomException.class, () -> {
-            donationService.donate(donationReq, userEmail, postId);
+            donationService.donate(donationReq, userId, postId);
         });
 
         // then
@@ -185,11 +185,11 @@ public class DonationServiceTest {
                 donation1
         );
 
-        when(donationRepository.findBySender_Email(userEmail)).thenReturn(donations);
+        when(donationRepository.findBySender_Id(userId)).thenReturn(donations);
 
         // when
         List<DonationPostInfoRes> donationPostInfoList =
-                donationService.getPostDonationDetails(userEmail);
+                donationService.getPostDonationDetails(userId);
 
         // then
         assertNotNull(donationPostInfoList);
@@ -206,11 +206,11 @@ public class DonationServiceTest {
                 donation2
         );
 
-        when(donationRepository.findByReceiver_Email(userEmail)).thenReturn(donations);
+        when(donationRepository.findByReceiver_Id(userId)).thenReturn(donations);
 
         // when
         List<DonationSenderInfoRes> donationSenderInfoList
-                = donationService.getDonorsList(userEmail);
+                = donationService.getDonorsList(userId);
 
         // then
         assertNotNull(donationSenderInfoList);

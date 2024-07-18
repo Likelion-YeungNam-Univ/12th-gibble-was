@@ -4,6 +4,7 @@ import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
 import gible.domain.post.service.PostService;
+import gible.domain.security.common.SecurityUserDetails;
 import gible.global.util.api.ApiUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -28,9 +28,9 @@ public class PostController {
     /* 게시글 업로드 */
     @PostMapping("/upload")
     public ResponseEntity<?> savePost(@Valid @RequestBody PostReq postReq,
-                                      @AuthenticationPrincipal UserDetails userDetails) {
+                                      @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
-        postService.savePost(postReq, userDetails.getUsername());
+        postService.savePost(postReq, userDetails.getId());
         return ResponseEntity.created(null).body(ApiUtil.from("게시글 업로드 완료."));
     }
 
