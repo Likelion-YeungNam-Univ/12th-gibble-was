@@ -1,5 +1,6 @@
 package gible.domain.user.controller;
 
+import gible.domain.event.dto.EventSummaryRes;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.service.UserService;
@@ -9,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +24,12 @@ public class UserController {
             @AuthenticationPrincipal SecurityUserDetails userDetails
     ){
         return ResponseEntity.ok().body(userService.getMyPage(userDetails.getId()));
+    }
+
+    @GetMapping("/participation-event")
+    public ResponseEntity<List<EventSummaryRes>> getParticipationEvent(
+            @AuthenticationPrincipal SecurityUserDetails userDetails
+    ){
+        return ResponseEntity.ok().body(userService.getParticipationEvents(userDetails.getId()));
     }
 }
