@@ -1,5 +1,6 @@
 package gible.domain.user.service;
 
+import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.entity.User;
 import gible.domain.user.repository.UserRepository;
 import gible.exception.CustomException;
@@ -21,4 +22,10 @@ public class UserService {
     public User findByEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }
+
+    public MyPageRes getMyPage(UUID userId) {
+        User user = findById(userId);
+        return MyPageRes.of(user.getEmail(), user.getNickname(), user.getPoint());
+    }
+
 }
