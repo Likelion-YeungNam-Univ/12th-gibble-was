@@ -4,7 +4,7 @@ import gible.domain.donation.dto.DonationPostInfoRes;
 import gible.domain.donation.dto.DonationReq;
 import gible.domain.donation.dto.DonationSenderInfoRes;
 import gible.domain.donation.service.DonationService;
-import gible.global.util.api.ApiUtil;
+import gible.global.util.api.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class DonationController {
                                     @AuthenticationPrincipal UserDetails userDetails) {
 
         donationService.donate(donationReq, userDetails.getUsername(), postId);
-        return ResponseEntity.ok(ApiUtil.from("기부 성공."));
+        return ResponseEntity.ok(SuccessRes.from("기부 성공."));
     }
 
     /* 게시글에 대한 기부자 목록 불러오기 */

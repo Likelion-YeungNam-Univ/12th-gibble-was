@@ -1,7 +1,7 @@
 package gible.exception;
 
 
-import gible.exception.dto.ErrorDto;
+import gible.exception.dto.ErrorRes;
 import gible.exception.error.ErrorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +25,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handle(CustomException ex){
         ErrorType errortype = ex.getErrortype();
         log.warn("Error occurred : [errorCode={}, message={}]", errortype.getStatus(), errortype.getMessage());
-        return ResponseEntity.status(errortype.getStatus()).body(ErrorDto.of(errortype.getStatus(), errortype.getMessage()));
+        return ResponseEntity.status(errortype.getStatus()).body(ErrorRes.of(errortype.getStatus(), errortype.getMessage()));
     }
 
     /* 일반 예외 처리 */
     @ExceptionHandler
     protected ResponseEntity customServerException(Exception ex) {
-        ErrorDto error = new ErrorDto(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage());
+        ErrorRes error = new ErrorRes(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage());
         log.warn("Error occurred : [errorCode={}, message={}]", error.status(), error.message());
         return ResponseEntity.status(error.status()).body(error);
     }
