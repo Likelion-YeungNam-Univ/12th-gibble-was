@@ -4,6 +4,7 @@ import gible.domain.event.dto.EventSummaryRes;
 import gible.domain.participate.entity.Participate;
 import gible.domain.participate.repository.ParticipateRepository;
 import gible.domain.user.dto.MyPageRes;
+import gible.domain.user.dto.SignUpReq;
 import gible.domain.user.entity.User;
 import gible.domain.user.repository.UserRepository;
 import gible.exception.CustomException;
@@ -47,5 +48,10 @@ public class UserService {
     @Transactional
     public void deleteById(UUID userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public void signUp(SignUpReq signUpReq) {
+        userRepository.save(SignUpReq.toEntity(signUpReq));
     }
 }
