@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -59,7 +58,7 @@ public class SecuredDonationControllerTest {
     @Mock
     private User user1;
 
-    private UserDetails userDetails;
+    private SecurityUserDetails userDetails;
 
     private User user;
 
@@ -116,7 +115,7 @@ public class SecuredDonationControllerTest {
         // given
         DonationReq donationReq = new DonationReq(2);
 
-        doNothing().when(donationService).donate(donationReq, userDetails.getUsername(), postId);
+        doNothing().when(donationService).donate(donationReq, userDetails.getId(), postId);
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -159,7 +158,7 @@ public class SecuredDonationControllerTest {
                 DonationPostInfoRes.fromEntity(donation1)
         );
 
-        given(donationService.getPostDonationDetails(userDetails.getUsername())).willReturn(donations);
+        given(donationService.getPostDonationDetails(userDetails.getId())).willReturn(donations);
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -185,7 +184,7 @@ public class SecuredDonationControllerTest {
                 DonationSenderInfoRes.fromEntity(donation2)
         );
 
-        given(donationService.getDonorsList(userDetails.getUsername())).willReturn(donations);
+        given(donationService.getDonorsList(userDetails.getId())).willReturn(donations);
 
         // when
         ResultActions resultActions = mockMvc.perform(

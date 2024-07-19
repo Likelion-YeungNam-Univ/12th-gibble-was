@@ -26,9 +26,9 @@ public class PostService {
 
     /* 게시글 생성 */
     @Transactional
-    public void savePost(PostReq postReq, String email) {
+    public void savePost(PostReq postReq, UUID userId) {
 
-        User foundUser = userRepository.findByEmail(email).orElseThrow(() ->
+        User foundUser = userRepository.findById(userId).orElseThrow(() ->
                 new CustomException(ErrorType.USER_NOT_FOUND));
 
         Post post = postReq.toEntity(postReq);
