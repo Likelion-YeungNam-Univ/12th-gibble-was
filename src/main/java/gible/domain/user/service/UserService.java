@@ -9,6 +9,7 @@ import gible.domain.user.entity.User;
 import gible.domain.user.repository.UserRepository;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +52,9 @@ public class UserService {
     }
 
     @Transactional
-    public void signUp(SignUpReq signUpReq) {
+    public void signUp(@Valid SignUpReq signUpReq) {
+        if(userRepository.existsByEmail(signUpReq.email()))
+            throw new CustomException(ErrorType.ALREADY_EXISTS_USER);
         userRepository.save(SignUpReq.toEntity(signUpReq));
     }
 }

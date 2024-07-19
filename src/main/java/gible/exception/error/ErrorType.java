@@ -30,6 +30,7 @@ public enum ErrorType {
 
     // 이미 존재하는 값을 보냈을 때.
     ALREADY_PARTICIPATE_POST(409, "이미 해당 이벤트에 참여하였습니다."),
+    ALREADY_EXISTS_USER(409, "이미 존재하는 유저입니다."),
 
     // 서버 에러
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다. 서버 팀에 연락주세요.");

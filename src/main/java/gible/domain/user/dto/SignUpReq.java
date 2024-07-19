@@ -5,13 +5,13 @@ import gible.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 
 public record SignUpReq(
-        @NotBlank
+        @NotBlank(message = "닉네임 입력은 필수입니다.")
         String nickname,
-        @NotBlank
+        @NotBlank(message = "이메일 입력은 필수입니다.")
         String email,
-        @NotBlank
+        @NotBlank(message = "이름 입력은 필수입니다.")
         String name,
-        @NotBlank
+        @NotBlank(message = "전화번호 입력은 필수입니다.")
         String phoneNumber,
         String role
 ) {
