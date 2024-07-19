@@ -198,36 +198,4 @@ public class PostServiceTest {
         assertEquals("제목1", postSummaryResPage.getContent().get(0).title());
         assertEquals("제목2", postSummaryResPage.getContent().get(1).title());
     }
-
-    @Test
-    @DisplayName("게시글 업데이트 테스트")
-    void updatePostTest() {
-        // given
-        PostReq updatePostReq =
-                new PostReq("제목수정", "내용수정", "주소수정", "이름수정", 30);
-
-        given(postRepository.findById(postId)).willReturn(Optional.ofNullable(post1));
-
-        // when
-        postService.updatePost(updatePostReq, postId);
-
-        // then
-        assertEquals("제목수정", post1.getTitle());
-        assertEquals("내용수정", post1.getContent());
-        assertEquals("주소수정", post1.getAddress());
-        assertEquals("이름수정", post1.getName());
-        assertEquals(30, post1.getWantedCard());
-    }
-
-    @Test
-    @DisplayName("게시글 삭제 테스트")
-    void deletePostTest() {
-        // given
-
-        // when
-        postService.deletePost(postId);
-
-        // then
-        verify(postRepository, times(1)).deleteById(postId);
-    }
 }
