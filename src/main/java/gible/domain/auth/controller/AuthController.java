@@ -1,6 +1,7 @@
 package gible.domain.auth.controller;
 
 
+import gible.domain.auth.dto.RenewTokenReq;
 import gible.domain.auth.dto.SignInReq;
 import gible.domain.auth.dto.SignInRes;
 import gible.domain.auth.service.AuthService;
@@ -21,6 +22,11 @@ public class AuthController {
     @PostMapping("/kakaologin")
     public ResponseEntity<SignInRes> login(@Valid @RequestBody SignInReq signInReq) {
         return ResponseEntity.ok().body(authService.login(signInReq));
+    }
+
+    @PostMapping("/token")
+    public ResponseEntity<?> renewToken(@Valid @RequestBody RenewTokenReq renewTokenReq) {
+        return ResponseEntity.ok().body(authService.renewToken(renewTokenReq));
     }
 
 }
