@@ -36,9 +36,14 @@ public class AuthService {
         return generateSignInRes(user);
     }
 
+
     private KakaoUserInfo getUserInfo(SignInReq signInReq) {
         String accessToken = kakaoService.getAccessToken(signInReq);
         return kakaoService.getUserInfo(accessToken);
+    }
+    public void logout(UUID userId) {
+        userService.deleteById(userId);
+        //레디스 리프레시토큰 삭제 로직
     }
 
     private SignInRes generateSignInRes(User user){
@@ -47,4 +52,5 @@ public class AuthService {
 
         return SignInRes.of(accessToken, refreshToken);
     }
+
 }
