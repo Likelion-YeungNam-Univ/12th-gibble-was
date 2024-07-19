@@ -1,7 +1,8 @@
 package gible.domain.user.service;
 
 import gible.domain.event.dto.EventSummaryRes;
-import gible.domain.event.repository.EventRepository;
+import gible.domain.participate.entity.Participate;
+import gible.domain.participate.repository.ParticipateRepository;
 import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.entity.User;
 import gible.domain.user.repository.UserRepository;
@@ -17,12 +18,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final EventRepository eventRepository;
-    public User findById(UUID userId){
-        return userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorType.USER_NOT_FOUND));
+    private final ParticipateRepository participateRepository;
+
+    public User findById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorType.USER_NOT_FOUND));
     }
 
-    public User findByEmail(String email){
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
 
@@ -32,6 +34,8 @@ public class UserService {
     }
 
     public List<EventSummaryRes> getParticipationEvents(UUID userId) {
-
+        return participateRepository.findByUser_Id(userId)
+                .stream().map(Participate::getEvent).toList()
+                .stream().map(EventSummaryRes::fromEntity).toList();
     }
 }
