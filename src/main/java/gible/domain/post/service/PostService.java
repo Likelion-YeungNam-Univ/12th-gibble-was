@@ -9,6 +9,7 @@ import gible.domain.user.entity.User;
 import gible.domain.user.repository.UserRepository;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
+import gible.global.aop.annotation.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +63,7 @@ public class PostService {
     }
 
     /* 게시글 수정 */
+    @AuthenticatedUser
     @Transactional
     public void updatePost(PostReq postReq, UUID postId) {
 
@@ -72,6 +74,7 @@ public class PostService {
     }
 
     /* 게시글 삭제 */
+    @AuthenticatedUser
     @Transactional
     public void deletePost(UUID postId) {
 
