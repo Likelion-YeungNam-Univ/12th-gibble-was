@@ -1,7 +1,6 @@
 package gible.domain.auth.service;
 
 import gible.domain.auth.dto.KakaoUserInfo;
-import gible.domain.auth.dto.RenewTokenReq;
 import gible.domain.auth.dto.SignInReq;
 
 import gible.domain.auth.dto.SignInRes;
@@ -10,7 +9,7 @@ import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
-import jakarta.servlet.http.HttpServletRequest;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,14 +30,17 @@ public class AuthService {
         if(user == null) {
             throw new CustomException(ErrorType.NEED_SIGNUP);
         }
-        return generateSignInRes(user);
+        return generateSignInRes(user.getEmail(), user.getId(), user.getRole().toString());
     }
 
     @Transactional(readOnly = true)
-    public SignInRes reIssueToken(RenewTokenReq renewTokenReq){
-        UUID uuid = UUID.randomUUID(); //레디스 로직수정필요
-        User user = userService.findById(uuid); //레디스 로직수정필요
-        return generateSignInRes(user);
+    public SignInRes reissueToken(String refreshToken){
+        Claims claims = jwtTokenProvider.parseClaims(refreshToken);
+        return generateSignInRes(
+                claims.getSubject(),
+                UUID.fromString(claims.get("userId", String.class)),
+                claims.get("role", String.class)
+        );
     }
 
     public void logout(UUID userId) {
@@ -56,9 +58,9 @@ public class AuthService {
         return kakaoService.getUserInfo(accessToken);
     }
 
-    private SignInRes generateSignInRes(User user){
-        String accessToken = jwtTokenProvider.generateAccessToken(user);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user);
+    private SignInRes generateSignInRes(String email, UUID userId, String role){
+        String accessToken = jwtTokenProvider.generateAccessToken(email, userId, role);
+        String refreshToken = jwtTokenProvider.generateRefreshToken(email, userId, role);
 
         return SignInRes.of(accessToken, refreshToken);
     }

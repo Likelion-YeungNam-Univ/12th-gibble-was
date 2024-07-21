@@ -9,8 +9,8 @@ public enum ErrorType {
 
     // 인증이 되어 있지 않을 때.
     UNAUTHORIZED(401, "접근 권한이 없습니다."),
-    ACCESS_TOKEN_EXPIRED(401, "Access Token이 만료되었습니다."),
-    INVALID_ACCESS_TOKEN(401, "Access Token이 잘못되었습니다."),
+    TOKEN_EXPIRED(401, "Token이 만료되었습니다."),
+    INVALID_TOKEN(401, "Token이 손실되었습니다."),
     SOCIAL_LOGIN_FAILED(401, "소셜로그인 오류"),
     NEED_SIGNUP(510, "닉네임 입력이 필요합니다."),
     // AccessToken 관련 오류
