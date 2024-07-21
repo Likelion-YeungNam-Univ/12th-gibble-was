@@ -11,6 +11,7 @@ import gible.global.util.api.SuccessRes;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,16 +27,18 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    private final CookieUtil cookieUtil;
 
     @PostMapping("/kakaologin")
-    public ResponseEntity<?> login(@Valid @RequestBody SignInReq signInReq, HttpServletResponse response) {
+    public ResponseEntity<?> login(@Valid @RequestBody SignInReq signInReq) {
         SignInRes signInRes = authService.login(signInReq);
-        CookieUtil.addRtkCookie(response, signInRes.refreshToken());
 
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("accessToken", signInRes.accessToken());
 
-        return ResponseEntity.ok(responseBody);
+        return ResponseEntity.ok().header("Set-Cookie",
+                cookieUtil.addRtkCookie("refreshToken", signInRes.refreshToken()).toString())
+                .body(responseBody);
     }
 
     @PostMapping("logout")

@@ -3,7 +3,7 @@ package gible.domain.participate.controller;
 import gible.domain.participate.dto.ParticipationEventRes;
 import gible.domain.participate.service.ParticipateService;
 import gible.domain.security.common.SecurityUserDetails;
-import gible.global.util.api.ApiUtil;
+import gible.global.util.api.SuccessRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +27,7 @@ public class ParticipateController {
                                                 @PathVariable UUID eventId) {
 
         participateService.participationEvent(userDetails.getId(), eventId);
-        return ResponseEntity.ok(ApiUtil.from("참여 완료."));
+        return ResponseEntity.ok(SuccessRes.from("참여 완료."));
     }
 
     /* 사용자가 참여한 이벤트 목록 조회하기 */

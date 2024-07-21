@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handle(CustomException ex){
         ErrorType errortype = ex.getErrortype();
-        log.warn("Error occurred : [errorCode={}, message={}]", errortype.getStatus(), errortype.getMessage());
+        log.error("Error occurred : [errorCode={}, message={}]", errortype.getStatus(), errortype.getMessage());
         return ResponseEntity.status(errortype.getStatus()).body(ErrorRes.of(errortype.getStatus(), errortype.getMessage()));
     }
 
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     protected ResponseEntity customServerException(Exception ex) {
         ErrorRes error = new ErrorRes(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage());
-        log.warn("Error occurred : [errorCode={}, message={}]", error.status(), error.message());
+        log.error("Error occurred : [errorCode={}, message={}]", error.status(), error.message());
         return ResponseEntity.status(error.status()).body(error);
     }
 

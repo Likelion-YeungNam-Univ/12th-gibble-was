@@ -54,11 +54,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    protected Claims parseClaims(String accessToken){
+    public Claims parseClaims(String token){
         return Jwts.parser()
                 .verifyWith(jwtConfig.getSecretKey())
                 .build()
-                .parseSignedClaims(accessToken)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 }
