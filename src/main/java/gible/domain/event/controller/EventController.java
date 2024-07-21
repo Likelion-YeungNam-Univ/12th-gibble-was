@@ -4,7 +4,7 @@ import gible.domain.event.dto.EventDetailRes;
 import gible.domain.event.dto.EventReq;
 import gible.domain.event.dto.EventSummaryRes;
 import gible.domain.event.service.EventService;
-import gible.global.util.api.ApiUtil;
+import gible.global.util.api.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/event")
 @RestController
-public class EventController {
+public class
+EventController {
 
     private final EventService eventService;
 
@@ -28,7 +29,7 @@ public class EventController {
     public ResponseEntity<?> saveEvent(@Valid @RequestBody EventReq eventReq) {
 
         eventService.saveEvent(eventReq);
-        return ResponseEntity.created(null).body(ApiUtil.from("이벤트 작성 성공."));
+        return ResponseEntity.created(null).body(SuccessRes.from("이벤트 작성 성공."));
     }
 
     /* 이벤트 목록 조회 */
@@ -52,7 +53,7 @@ public class EventController {
                                          @PathVariable UUID eventId) {
 
         eventService.updateEvent(updateEventReq, eventId);
-        return ResponseEntity.ok(ApiUtil.from("이벤트 수정 성공."));
+        return ResponseEntity.ok(SuccessRes.from("이벤트 수정 성공."));
     }
 
     /* 이벤트 삭제 */
@@ -60,6 +61,6 @@ public class EventController {
     public ResponseEntity<?> deleteEvent(@PathVariable UUID eventId) {
 
         eventService.deleteEvent(eventId);
-        return ResponseEntity.ok(ApiUtil.from("이벤트 삭제 성공."));
+        return ResponseEntity.ok(SuccessRes.from("이벤트 삭제 성공."));
     }
 }

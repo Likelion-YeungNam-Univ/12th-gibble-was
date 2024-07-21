@@ -21,7 +21,7 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests.requestMatchers(
-                                        "/auth/kakao",
+                                        "/auth/kakaologin",
                                         "/auth/token",//라우팅 아직 설정x
                                         "/swagger-resources/**",
                                         "/swagger-ui/**",

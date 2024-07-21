@@ -4,17 +4,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ApiUtil<T> {
+public class SuccessRes<T> {
 
     private T response;
 
     @Builder
-    private ApiUtil(T response) {
+    private SuccessRes(T response) {
         this.response = response;
     }
 
-    public static <T> ApiUtil<T> from(T response) {
-        return ApiUtil.<T>builder()
+    public static <T> SuccessRes<T> from(T response) {
+        return SuccessRes.<T>builder()
                 .response(response)
                 .build();
     }

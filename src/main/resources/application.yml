@@ -20,6 +20,8 @@ jwt:
   access-expiration: ${JWT_ACCESS_EXPIRATION}
   refresh-expiration: ${JWT_REFRESH_EXPIRATION}
   issuer: ${JWT_ISSUER}
+cookie:
+  refresh-expiration: ${COOKIE_REFRESH_EXPIRATION}
 oauth2:
   kakao:
     tokenUri: https://kauth.kakao.com/oauth/token

@@ -2,8 +2,6 @@ package gible.domain.security.jwt;
 
 
 import gible.config.JwtConfig;
-import gible.domain.user.entity.User;
-import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
 import io.jsonwebtoken.Claims;
@@ -19,29 +17,27 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
     private final JwtConfig jwtConfig;
-    private final UserService userService;
 
 
     public boolean validateToken(String token) {
         Claims claims = parseClaims(token);
-        if(userService.findById(claims.get("auth", UUID.class)) == null){
-            throw new CustomException(ErrorType.USER_NOT_FOUND);
+        if(claims == null){
+            throw new CustomException(ErrorType.INVALID_TOKEN);
+        }
+        if(claims.getExpiration().before(new Date())){
+            throw new CustomException(ErrorType.TOKEN_EXPIRED);
         }
         return !claims.getExpiration().before(new Date());
     }
 
-    public String generateAccessToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("role", user.getRole());
-        return createToken(user.getEmail(), claims, jwtConfig.getAccessExpiration());
+    public String generateAccessToken(String email, UUID userId, String role) {
+        Map<String, Object> claims = createClaims(userId, role);
+        return createToken(email, claims, jwtConfig.getAccessExpiration());
     }
 
-    public String generateRefreshToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("role", user.getRole());
-        return createToken(user.getEmail(), claims, jwtConfig.getRefreshExpiration());
+    public String generateRefreshToken(String email, UUID userId, String role) {
+        Map<String, Object> claims = createClaims(userId, role);
+        return createToken(email, claims, jwtConfig.getRefreshExpiration());
     }
 
     public String createToken(String email, Map<String, Object> claims, Long expiration) {
@@ -54,11 +50,18 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    protected Claims parseClaims(String accessToken){
+    public Claims parseClaims(String token){
         return Jwts.parser()
                 .verifyWith(jwtConfig.getSecretKey())
                 .build()
-                .parseSignedClaims(accessToken)
+                .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    private static Map<String, Object> createClaims(UUID userId, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
+        claims.put("role", role);
+        return claims;
     }
 }

@@ -4,8 +4,8 @@ import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
 import gible.domain.post.service.PostService;
+import gible.global.util.api.SuccessRes;
 import gible.domain.security.common.SecurityUserDetails;
-import gible.global.util.api.ApiUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +31,7 @@ public class PostController {
                                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         postService.savePost(postReq, userDetails.getId());
-        return ResponseEntity.created(null).body(ApiUtil.from("게시글 업로드 완료."));
+        return ResponseEntity.created(null).body(SuccessRes.from("게시글 업로드 완료."));
     }
 
     /* 게시글 목록 조회 + 검색 조회 */
@@ -59,7 +59,7 @@ public class PostController {
                                         @PathVariable UUID postId) {
 
         postService.updatePost(postReq, postId);
-        return ResponseEntity.ok(ApiUtil.from("게시글 수정 완료."));
+        return ResponseEntity.ok(SuccessRes.from("게시글 수정 완료."));
     }
 
     /* 게시글 삭제 */
@@ -67,7 +67,7 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable UUID postId) {
 
         postService.deletePost(postId);
-        return ResponseEntity.ok(ApiUtil.from("게시글 삭제 완료."));
+        return ResponseEntity.ok(SuccessRes.from("게시글 삭제 완료."));
     }
 }
 
