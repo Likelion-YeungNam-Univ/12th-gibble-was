@@ -43,7 +43,8 @@ public class AuthService {
         );
     }
 
-    public void logout(UUID userId) {
+    public void logout() {
+
         //레디스 리프레시토큰 삭제 로직
     }
 
