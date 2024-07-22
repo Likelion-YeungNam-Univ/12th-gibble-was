@@ -9,7 +9,6 @@ import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
-import gible.global.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class AuthService {
     private final UserService userService;
     private final KakaoService kakaoService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisUtil redisUtil;
+    private final RefreshTokenService refreshTokenService;
 
     @Transactional(readOnly = true)
     public SignInRes login(SignInReq signInReq) {
@@ -32,22 +31,26 @@ public class AuthService {
         if(user == null) {
             throw new CustomException(ErrorType.NEED_SIGNUP);
         }
-        return generateSignInRes(user.getEmail(), user.getId(), user.getRole().toString());
+
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String refreshToken = refreshTokenService.saveRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
+
+        return SignInRes.of(accessToken, refreshToken);
     }
 
     @Transactional(readOnly = true)
     public SignInRes reissueToken(String refreshToken){
         Claims claims = jwtTokenProvider.parseClaims(refreshToken);
-        return generateSignInRes(
-                claims.getSubject(),
-                UUID.fromString(claims.get("userId", String.class)),
-                claims.get("role", String.class)
-        );
+        if(!refreshTokenService.getRefreshToken(claims.get("userId", String.class))){
+            throw new CustomException(ErrorType.TOKEN_EXPIRED);
+        }
+        String newAccessToken = refreshTokenService.reIssueAccessToken(refreshToken);
+        String newRefreshToken = refreshTokenService.reIssueRefreshToken(refreshToken);
+        return SignInRes.of(newAccessToken, newRefreshToken);
     }
 
-    public void logout() {
-        redisUtil.set("hi", "is_token");
-        //레디스 리프레시토큰 삭제 로직
+    public void logout(UUID userId) {
+        refreshTokenService.deleteRefreshToken(userId.toString());
     }
 
     @Transactional
@@ -59,13 +62,6 @@ public class AuthService {
     private KakaoUserInfo getUserInfo(SignInReq signInReq) {
         String accessToken = kakaoService.getAccessToken(signInReq);
         return kakaoService.getUserInfo(accessToken);
-    }
-
-    private SignInRes generateSignInRes(String email, UUID userId, String role){
-        String accessToken = jwtTokenProvider.generateAccessToken(email, userId, role);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(email, userId, role);
-
-        return SignInRes.of(accessToken, refreshToken);
     }
 
 }
