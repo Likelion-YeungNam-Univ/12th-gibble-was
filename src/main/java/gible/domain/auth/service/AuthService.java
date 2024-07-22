@@ -9,6 +9,7 @@ import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
+import gible.global.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class AuthService {
     private final UserService userService;
     private final KakaoService kakaoService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisUtil redisUtil;
 
     @Transactional(readOnly = true)
     public SignInRes login(SignInReq signInReq) {
@@ -44,7 +46,7 @@ public class AuthService {
     }
 
     public void logout() {
-
+        redisUtil.set("hi", "is_token");
         //레디스 리프레시토큰 삭제 로직
     }
 
