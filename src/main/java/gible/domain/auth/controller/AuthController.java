@@ -4,7 +4,7 @@ package gible.domain.auth.controller;
 import gible.domain.auth.dto.SignInReq;
 import gible.domain.auth.dto.SignInRes;
 import gible.domain.auth.service.AuthService;
-import gible.domain.auth.util.CookieUtil;
+import gible.global.util.cookie.CookieUtil;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.util.api.SuccessRes;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package gible.domain.auth.util;
+package gible.global.util.cookie;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
