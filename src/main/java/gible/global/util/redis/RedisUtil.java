@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 
 @Component
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ public class RedisUtil {
     }
 
     public void saveExpire(String key, Long seconds){
-        redisTemplate.opsForValue().set(key, Duration.ofSeconds(seconds));
+        redisTemplate.opsForValue().set(key, String.valueOf(seconds));
     }
 
     public boolean get(String key){
