@@ -23,17 +23,17 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class KakaoService {
     private final KakaoConfig kakaoConfig;
-    private final String HEADER_VALUE = "applcation/x-www-form-urlencoded;charset=utf-8";
-    public String getAccessToken(SignInReq signInReq) {
-        try{
+    private final String HEADER_VALUE = "application/x-www-form-urlencoded;charset=utf-8";
+    public String getAccessToken(SignInReq signInReq){
+        try {
             HttpHeaders headers = new HttpHeaders();
+            System.out.println(kakaoConfig.getRedirectUri());
             headers.add("Content-type", HEADER_VALUE);
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
             body.add("grant_type", "authorization_code");
             body.add("client_id", kakaoConfig.getClientId());
             body.add("redirect_uri", kakaoConfig.getRedirectUri());
             body.add("code", signInReq.code());
-
             HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(
@@ -42,14 +42,14 @@ public class KakaoService {
                     kakaoTokenRequest,
                     String.class
             );
-
             String responseBody = response.getBody();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
             return jsonNode.get("access_token").asText();
         } catch(Exception e){
-            throw new CustomException(ErrorType.SOCIAL_LOGIN_FAILED);
+            System.out.println(e.getMessage());
         }
+        return null;
     }
 
     public KakaoUserInfo getUserInfo(String accessToken) {
@@ -66,17 +66,14 @@ public class KakaoService {
                     kakaoUserInfoRequest,
                     String.class
             );
-
             String responseBody = response.getBody();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode userInfo = objectMapper.readTree(responseBody).get("kakao_account");
             System.out.println(userInfo);
 
             String email = userInfo.get("email").asText();
-            String name = userInfo.get("name").asText();
-            String phoneNumber = userInfo.get("phone_number").asText();
 
-            return KakaoUserInfo.of(email, name, phoneNumber);
+            return KakaoUserInfo.of(email);
         } catch (Exception e){
             throw new CustomException(ErrorType.SOCIAL_LOGIN_FAILED);
         }
