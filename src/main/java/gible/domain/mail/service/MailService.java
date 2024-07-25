@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -19,6 +20,7 @@ import java.util.List;
 import static gible.domain.mail.util.MailProperties.MAIL_SUBJECT;
 
 @RequiredArgsConstructor
+@EnableAsync
 @Service
 public class MailService {
 
