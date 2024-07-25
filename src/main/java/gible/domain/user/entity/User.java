@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,8 @@ public class User {
     private String phoneNumber;
 
     @Column(name = "donate_count")
+    @ColumnDefault("0")
     private int donateCount;
-
-    private int point;
 
     @Column(name = "email_agree")
     private boolean emailAgree;

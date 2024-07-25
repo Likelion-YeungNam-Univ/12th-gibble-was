@@ -30,7 +30,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public MyPageRes getMyPage(UUID userId) {
         User user = findById(userId);
-        return MyPageRes.of(user.getEmail(), user.getNickname(), user.getPoint());
+        return MyPageRes.of(user.getEmail(), user.getNickname());
     }
 
 //    @Transactional(readOnly = true)
