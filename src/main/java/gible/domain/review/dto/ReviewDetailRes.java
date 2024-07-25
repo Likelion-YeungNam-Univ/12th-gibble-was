@@ -2,7 +2,6 @@ package gible.domain.review.dto;
 
 import gible.domain.review.entity.Review;
 
-import java.util.UUID;
 
 public record ReviewDetailRes(
         String title,

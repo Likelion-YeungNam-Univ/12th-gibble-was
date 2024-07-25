@@ -1,6 +1,5 @@
 package gible.domain.review.entity;
 
-import gible.domain.post.entity.Post;
 import gible.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

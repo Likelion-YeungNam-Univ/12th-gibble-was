@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -42,7 +41,7 @@ public class ReviewController {
             @RequestBody ReviewReq reviewReq
             ) {
         reviewService.uploadReview(userDetails.getId(), reviewReq);
-        return ResponseEntity.ok(SuccessRes.from("리뷰 업로드 성공"));
+        return ResponseEntity.created(null).body(SuccessRes.from("리뷰 업로드 성공"));
     }
 
     @DeleteMapping("/{reviewId}")
