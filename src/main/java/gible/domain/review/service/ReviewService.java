@@ -9,11 +9,12 @@ import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+
 import java.util.UUID;
 
 @Service
@@ -23,8 +24,8 @@ public class ReviewService {
     private final UserService userService;
 
     @Transactional(readOnly = true)
-    public List<ReviewRes> getReviews(Pageable pageable) {
-        return reviewRepository.findAll(pageable).stream().map(ReviewRes::fromEntity).toList();
+    public Page<ReviewRes> getReviews(Pageable pageable) {
+        return reviewRepository.findAll(pageable).map(ReviewRes::fromEntity);
     }
 
     @Transactional(readOnly = true)
