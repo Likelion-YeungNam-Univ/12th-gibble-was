@@ -44,6 +44,9 @@ public class User {
 
     private int point;
 
+    @Column(name = "email_agree")
+    private boolean emailAgree;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -60,11 +63,12 @@ public class User {
     private List<Participate> participates = new ArrayList<>();
 
     @Builder
-    public User(String name, String email, String nickname, String phoneNumber, Role role) {
+    public User(String name, String email, String nickname, String phoneNumber, boolean emailAgree, Role role) {
         this.name = name;
         this.email = email;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
+        this.emailAgree = emailAgree;
         this.role = role;
     }
 }

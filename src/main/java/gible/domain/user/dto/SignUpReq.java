@@ -17,6 +17,7 @@ public record SignUpReq(
         @NotBlank(message = "전화번호 입력은 필수입니다.")
         @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "전화번호 형식은 010-xxxx-xxxx이어야 합니다.")
         String phoneNumber,
+        boolean emailAgree,
         String role
 ) {
     public static User toEntity(SignUpReq signUpDto) {
@@ -25,6 +26,7 @@ public record SignUpReq(
                 .email(signUpDto.email())
                 .phoneNumber(signUpDto.phoneNumber())
                 .nickname(signUpDto.nickname())
+                .emailAgree(signUpDto.emailAgree())
                 .role(Role.valueOf(signUpDto.role()))
                 .build();
     }
