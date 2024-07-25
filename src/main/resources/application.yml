@@ -18,6 +18,28 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+            trust: smtp.naver.com
+
+web:
+  post-url: ${WEB_POST_URL}
+
 jwt:
   secret: ${JWT_SECRET}
   access-expiration: ${JWT_ACCESS_EXPIRATION}
@@ -28,6 +50,6 @@ cookie:
 oauth2:
   kakao:
     tokenUri: https://kauth.kakao.com/oauth/token
-    clientId: eda321e5223dd5d98990c2399f445cfd
-    redirectUri: http://3.36.63.211/kakaologin
+    clientId: ${CLIENT_ID}
+    redirectUri: ${REDIRECT_URL}
     getUserInfoUri: https://kapi.kakao.com/v2/user/me

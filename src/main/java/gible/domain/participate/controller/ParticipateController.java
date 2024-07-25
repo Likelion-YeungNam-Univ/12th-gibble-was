@@ -31,7 +31,7 @@ public class ParticipateController {
     }
 
     /* 사용자가 참여한 이벤트 목록 조회하기 */
-    @GetMapping("/my-page/participation-event")
+    @GetMapping("/user/participation-event")
     public List<ParticipationEventRes> getAllParticipationEvents(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
