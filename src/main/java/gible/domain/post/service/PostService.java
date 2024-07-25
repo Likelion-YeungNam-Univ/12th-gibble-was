@@ -1,5 +1,6 @@
 package gible.domain.post.service;
 
+import gible.domain.mail.service.MailService;
 import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class PostService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final MailService mailService;
 
     /* 게시글 생성 */
     @Transactional
@@ -34,7 +37,11 @@ public class PostService {
 
         Post post = postReq.toEntity(postReq);
         post.addWriter(foundUser);
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+
+        // 등록된 게시글 메일 보내기
+        List<User> emailAgreeUsers = userRepository.findByEmailAgree(true);
+        mailService.sendMail(emailAgreeUsers.stream().map(User::getEmail).toList(), savedPost);
     }
 
     /* 전체 게시글 불러오기 */
