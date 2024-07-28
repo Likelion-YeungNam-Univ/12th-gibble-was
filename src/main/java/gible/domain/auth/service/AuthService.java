@@ -26,13 +26,13 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public SignInRes login(SignInReq signInReq) {
-        KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
-        User user = userService.findByEmail(kakaoUserInfo.email());
+        //KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
+        User user = userService.findByEmail("lth8905@naver.com");
+        System.out.println(user.getEmail());
         if(user == null) {
             throw new CustomException(ErrorType.NEED_SIGNUP);
         }
-
-        String accessToken = accessTokenProvider.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String accessToken = accessTokenProvider.generateToken(user.getEmail(), user.getId(), user.getRole().toString());
         String refreshToken = refreshTokenService.saveRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
 
         return SignInRes.of(accessToken, refreshToken);

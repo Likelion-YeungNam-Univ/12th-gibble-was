@@ -1,6 +1,7 @@
 package gible.domain.auth.service;
 
 import gible.global.common.jwt.AccessTokenProvider;
+import gible.global.common.jwt.RefreshTokenProvider;
 import gible.global.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +14,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenService {
     private final RedisUtil redisUtil;
-    private final AccessTokenProvider accessTokenProvider;
+    private final RefreshTokenProvider refreshTokenProvider;
 
     @Value("${jwt.refresh-expiration}")
     private Long refreshExpiration;
 
     public String saveRefreshToken(String email, UUID userId, String role) {
-        String refreshToken = accessTokenProvider.generateRefreshToken(email, userId, role);
+        String refreshToken = refreshTokenProvider.generateToken(email, userId, role);
 
         redisUtil.save(userId.toString(), refreshToken);
         redisUtil.saveExpire(userId.toString(), refreshExpiration);
@@ -36,10 +37,10 @@ public class RefreshTokenService {
     }
 
     public String reIssueAccessToken(String refreshToken) {
-        Claims claims = accessTokenProvider.parseClaims(refreshToken);
-        return accessTokenProvider.generateAccessToken(
+        Claims claims = refreshTokenProvider.parseClaims(refreshToken);
+        return refreshTokenProvider.generateToken(
                 claims.getSubject(),
-                UUID.fromString(claims.get("useId", String.class)),
+                UUID.fromString(claims.get("userId", String.class)),
                 claims.get("role", String.class)
         );
     }
@@ -47,10 +48,10 @@ public class RefreshTokenService {
     public String reIssueRefreshToken(String refreshToken) {
         this.deleteRefreshToken(refreshToken);
 
-        Claims claims = accessTokenProvider.parseClaims(refreshToken);
+        Claims claims = refreshTokenProvider.parseClaims(refreshToken);
         return this.saveRefreshToken(
                 claims.getSubject(),
-                UUID.fromString(claims.get("useId", String.class)),
+                UUID.fromString(claims.get("userId", String.class)),
                 claims.get("role", String.class)
         );
     }
