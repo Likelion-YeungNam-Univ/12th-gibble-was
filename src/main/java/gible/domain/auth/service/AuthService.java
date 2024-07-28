@@ -4,7 +4,7 @@ import gible.domain.auth.dto.KakaoUserInfo;
 import gible.domain.auth.dto.SignInReq;
 
 import gible.domain.auth.dto.SignInRes;
-import gible.domain.security.jwt.JwtTokenProvider;
+import gible.global.common.jwt.AccessTokenProvider;
 import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class AuthService {
     private final UserService userService;
     private final KakaoService kakaoService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AccessTokenProvider accessTokenProvider;
     private final RefreshTokenService refreshTokenService;
 
     @Transactional(readOnly = true)
@@ -32,7 +32,7 @@ public class AuthService {
             throw new CustomException(ErrorType.NEED_SIGNUP);
         }
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String accessToken = accessTokenProvider.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
         String refreshToken = refreshTokenService.saveRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
 
         return SignInRes.of(accessToken, refreshToken);
@@ -40,7 +40,7 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public SignInRes reissueToken(String refreshToken){
-        Claims claims = jwtTokenProvider.parseClaims(refreshToken);
+        Claims claims = accessTokenProvider.parseClaims(refreshToken);
         if(!refreshTokenService.getRefreshToken(claims.get("userId", String.class))){
             throw new CustomException(ErrorType.TOKEN_EXPIRED);
         }

@@ -1,6 +1,6 @@
 package gible.domain.auth.service;
 
-import gible.domain.security.jwt.JwtTokenProvider;
+import gible.global.common.jwt.AccessTokenProvider;
 import gible.global.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenService {
     private final RedisUtil redisUtil;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AccessTokenProvider accessTokenProvider;
 
     @Value("${jwt.refresh-expiration}")
     private Long refreshExpiration;
 
     public String saveRefreshToken(String email, UUID userId, String role) {
-        String refreshToken = jwtTokenProvider.generateRefreshToken(email, userId, role);
+        String refreshToken = accessTokenProvider.generateRefreshToken(email, userId, role);
 
         redisUtil.save(userId.toString(), refreshToken);
         redisUtil.saveExpire(userId.toString(), refreshExpiration);
@@ -36,8 +36,8 @@ public class RefreshTokenService {
     }
 
     public String reIssueAccessToken(String refreshToken) {
-        Claims claims = jwtTokenProvider.parseClaims(refreshToken);
-        return jwtTokenProvider.generateAccessToken(
+        Claims claims = accessTokenProvider.parseClaims(refreshToken);
+        return accessTokenProvider.generateAccessToken(
                 claims.getSubject(),
                 UUID.fromString(claims.get("useId", String.class)),
                 claims.get("role", String.class)
@@ -47,7 +47,7 @@ public class RefreshTokenService {
     public String reIssueRefreshToken(String refreshToken) {
         this.deleteRefreshToken(refreshToken);
 
-        Claims claims = jwtTokenProvider.parseClaims(refreshToken);
+        Claims claims = accessTokenProvider.parseClaims(refreshToken);
         return this.saveRefreshToken(
                 claims.getSubject(),
                 UUID.fromString(claims.get("useId", String.class)),
