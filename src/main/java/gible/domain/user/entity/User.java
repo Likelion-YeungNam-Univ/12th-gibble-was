@@ -1,9 +1,9 @@
 package gible.domain.user.entity;
 
 import gible.domain.donation.entity.Donation;
-import gible.domain.event.entity.Event;
 import gible.domain.participate.entity.Participate;
 import gible.domain.post.entity.Post;
+import gible.domain.review.entity.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -63,8 +63,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Participate> participates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
-    private List<Event> events = new ArrayList<>();
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public User(String name, String email, String nickname, String phoneNumber, boolean emailAgree, Role role) {
