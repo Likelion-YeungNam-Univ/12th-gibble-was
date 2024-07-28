@@ -3,6 +3,7 @@ package gible.global.common.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
+@Qualifier("refreshTokenProvider")
 public class RefreshTokenProvider implements JwtTokenProvider {
     private final SecretKey secretKey;
     private final Duration refreshTokenDuration;

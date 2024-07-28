@@ -1,10 +1,9 @@
 package gible.global.common.jwt;
 
 
-import gible.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,7 @@ import java.util.UUID;
 
 @Component
 @Primary
+@Qualifier("accessTokenProvider")
 public class AccessTokenProvider implements JwtTokenProvider {
     private final SecretKey secretKey;
     private final Duration accessTokenDuration;
