@@ -53,7 +53,7 @@ public class SecuredPostServiceTest {
     @BeforeEach
     void setUp() {
         this.updatePostReq =
-                new PostReq("제목수정", "내용수정", "주소수정", "이름수정", 30);
+                new PostReq("제목수정", "내용수정", "주소수정", 30);
         this.userId = UUID.randomUUID();
         this.postId = UUID.randomUUID();
 
@@ -105,7 +105,6 @@ public class SecuredPostServiceTest {
         assertEquals("제목수정", post.getTitle());
         assertEquals("내용수정", post.getContent());
         assertEquals("주소수정", post.getAddress());
-        assertEquals("이름수정", post.getName());
         assertEquals(30, post.getWantedCard());
     }
 
