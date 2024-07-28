@@ -25,6 +25,7 @@ public enum ErrorType {
     USER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
     POST_NOT_FOUND(404, "존재하지 않는 글입니다."),
     EVENT_NOT_FOUND(404, "존재하지 않는 이벤트입니다."),
+    REVIEW_NOT_FOUND(404, "존재하지 않는 리뷰입니다."),
     DONATE_NOT_FOUND(404, "기부한 이력이 없습니다."),
     PARTICIPATE_NOT_FOUND(404, "해당 이벤트에 참여한 이력이 없습니다."),
 
