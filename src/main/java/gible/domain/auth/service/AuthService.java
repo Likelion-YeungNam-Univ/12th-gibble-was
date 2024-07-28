@@ -9,6 +9,7 @@ import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
+import gible.global.common.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,13 @@ import java.util.UUID;
 public class AuthService {
     private final UserService userService;
     private final KakaoService kakaoService;
-    private final AccessTokenProvider accessTokenProvider;
+    private final JwtTokenProvider accessTokenProvider;
     private final RefreshTokenService refreshTokenService;
 
     @Transactional(readOnly = true)
     public SignInRes login(SignInReq signInReq) {
-        //KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
+        KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
         User user = userService.findByEmail("lth8905@naver.com");
-        System.out.println(user.getEmail());
         if(user == null) {
             throw new CustomException(ErrorType.NEED_SIGNUP);
         }
