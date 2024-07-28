@@ -3,6 +3,7 @@ package gible.domain.event.controller;
 import gible.domain.event.dto.EventDetailRes;
 import gible.domain.event.dto.EventReq;
 import gible.domain.event.dto.EventSummaryRes;
+import gible.domain.event.entity.Region;
 import gible.domain.event.service.EventService;
 import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
@@ -35,9 +36,12 @@ EventController {
     /* 이벤트 목록 조회 */
     @GetMapping
     public Page<EventSummaryRes> getAllEvents(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(name = "region", required = false) Region region) {
 
-        return eventService.getAllEvents(pageable);
+        if (region == null)
+            return eventService.getAllEvents(pageable);;
+        return eventService.getAllEventsByRegion(region, pageable);
     }
 
     /* 특정 이벤트 조회 */
