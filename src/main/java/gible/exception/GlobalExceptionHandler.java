@@ -1,7 +1,7 @@
 package gible.exception;
 
 
-import gible.exception.dto.ErrorRes;
+import gible.global.common.response.ErrorRes;
 import gible.exception.error.ErrorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

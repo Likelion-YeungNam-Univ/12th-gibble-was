@@ -4,7 +4,7 @@ import gible.domain.donation.dto.DonationPostInfoRes;
 import gible.domain.donation.dto.DonationReq;
 import gible.domain.donation.dto.DonationSenderInfoRes;
 import gible.domain.donation.service.DonationService;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import gible.domain.security.common.SecurityUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

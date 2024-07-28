@@ -6,7 +6,7 @@ import gible.domain.auth.dto.SignInRes;
 import gible.domain.auth.service.AuthService;
 import gible.global.util.cookie.CookieUtil;
 import gible.domain.security.common.SecurityUserDetails;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
