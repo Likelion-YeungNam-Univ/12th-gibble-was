@@ -3,7 +3,7 @@ package gible.domain.review.controller;
 import gible.domain.review.dto.ReviewReq;
 import gible.domain.review.service.ReviewService;
 import gible.domain.security.common.SecurityUserDetails;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

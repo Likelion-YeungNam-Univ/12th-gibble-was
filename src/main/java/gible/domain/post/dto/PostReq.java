@@ -11,8 +11,6 @@ public record PostReq(
         String content,
         @NotBlank(message = "주소는 필수 작성 항목입니다.")
         String address,
-        @NotBlank(message = "이름은 필수 작성 항목입니다.")
-        String name,
         @NotNull(message = "필요한 개수는 필수 작성 항목입니다.")
         int wantedCard
 ) {
@@ -21,7 +19,6 @@ public record PostReq(
                 .title(postReq.title())
                 .content(postReq.content())
                 .address(postReq.address())
-                .name(postReq.name())
                 .wantedCard(postReq.wantedCard())
                 .build();
     }

@@ -18,7 +18,7 @@ public record PostDetailRes(
     public static PostDetailRes fromEntity(Post post) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
-                post.getName(), post.getWantedCard(), post.getDonatedCare(),
-                post.getWriter().getPhoneNumber(), post.getWriter().getName());
+                post.getWriter().getName(), post.getWantedCard(), post.getDonatedCare(),
+                post.getWriter().getPhoneNumber(), post.getWriter().getNickname());
     }
 }
