@@ -40,8 +40,7 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public SignInRes reissueToken(String refreshToken){
-        Claims claims = accessTokenProvider.parseClaims(refreshToken);
-        if(!refreshTokenService.getRefreshToken(claims.get("userId", String.class))){
+        if(!refreshTokenService.getRefreshToken(refreshToken)){
             throw new CustomException(ErrorType.TOKEN_EXPIRED);
         }
         String newAccessToken = refreshTokenService.reIssueAccessToken(refreshToken);

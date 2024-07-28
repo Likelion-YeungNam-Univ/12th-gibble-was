@@ -28,8 +28,9 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
-    public boolean getRefreshToken(String userId) {
-        return redisUtil.get(userId);
+    public boolean getRefreshToken(String token) {
+        Claims claims = refreshTokenProvider.parseClaims(token);
+        return redisUtil.get(claims.get("userId", String.class));
     }
 
     public void deleteRefreshToken(String userId) {

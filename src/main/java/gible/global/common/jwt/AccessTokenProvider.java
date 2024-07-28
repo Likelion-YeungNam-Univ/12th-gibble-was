@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
+@Primary
 public class AccessTokenProvider implements JwtTokenProvider {
     private final SecretKey secretKey;
     private final Duration accessTokenDuration;
