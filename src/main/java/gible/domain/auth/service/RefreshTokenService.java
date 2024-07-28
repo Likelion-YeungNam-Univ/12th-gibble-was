@@ -39,7 +39,7 @@ public class RefreshTokenService {
         Claims claims = jwtTokenProvider.parseClaims(refreshToken);
         return jwtTokenProvider.generateAccessToken(
                 claims.getSubject(),
-                UUID.fromString(claims.get("useId", String.class)),
+                UUID.fromString(claims.get("userId", String.class)),
                 claims.get("role", String.class)
         );
     }
@@ -50,7 +50,7 @@ public class RefreshTokenService {
         Claims claims = jwtTokenProvider.parseClaims(refreshToken);
         return this.saveRefreshToken(
                 claims.getSubject(),
-                UUID.fromString(claims.get("useId", String.class)),
+                UUID.fromString(claims.get("userId", String.class)),
                 claims.get("role", String.class)
         );
     }
