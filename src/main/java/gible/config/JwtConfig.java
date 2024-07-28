@@ -20,6 +20,7 @@ public class JwtConfig {
     private long refreshExpiration;
     private String issuer;
     private SecretKey secretKey;
+
     @PostConstruct
     public void init() {
         this.secretKey = new SecretKeySpec(secret.getBytes(), Jwts.SIG.HS256.key().build().getAlgorithm());
