@@ -1,13 +1,15 @@
 package gible.domain.review.entity;
 
-import gible.domain.post.entity.Post;
 import gible.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -26,13 +28,19 @@ public class Review {
 
     private String imageUrl;
 
+    @Column(name = "created_at")
+    @CreatedDate
+    private LocalDateTime createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private User writer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-
+    @Builder
+    public Review(String title, String content, String imageUrl, User writer) {
+        this.title = title;
+        this.content = content;
+        this.imageUrl = imageUrl;
+        this.writer = writer;
+    }
 }
