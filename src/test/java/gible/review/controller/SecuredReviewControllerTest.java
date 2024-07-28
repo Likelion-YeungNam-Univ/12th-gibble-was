@@ -3,7 +3,6 @@ package gible.review.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gible.domain.review.controller.ReviewController;
 import gible.domain.review.dto.ReviewReq;
-import gible.domain.review.entity.Review;
 import gible.domain.review.service.ReviewService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.domain.security.jwt.JwtAuthenticationFilter;
@@ -22,9 +21,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.UUID;
-
-import static org.hamcrest.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;

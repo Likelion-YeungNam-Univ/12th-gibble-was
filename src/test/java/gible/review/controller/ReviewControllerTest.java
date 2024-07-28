@@ -1,10 +1,7 @@
 package gible.review.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gible.domain.event.dto.EventReq;
 import gible.domain.review.controller.ReviewController;
 import gible.domain.review.dto.ReviewDetailRes;
-import gible.domain.review.dto.ReviewReq;
 import gible.domain.review.dto.ReviewSummaryRes;
 import gible.domain.review.entity.Review;
 import gible.domain.review.service.ReviewService;
