@@ -1,9 +1,10 @@
-package gible.post.controller;
+package gible.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gible.domain.post.controller.PostController;
-import gible.domain.post.dto.PostReq;
-import gible.domain.post.service.PostService;
+import gible.domain.review.controller.ReviewController;
+import gible.domain.review.dto.ReviewReq;
+import gible.domain.review.entity.Review;
+import gible.domain.review.service.ReviewService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.domain.security.jwt.JwtAuthenticationFilter;
 import gible.domain.user.entity.Role;
@@ -11,6 +12,7 @@ import gible.domain.user.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,8 +22,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import java.util.UUID;
+
+import static org.hamcrest.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -31,9 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PostController.class)
-public class SecuredPostControllerTest {
-
+@WebMvcTest(ReviewController.class)
+public class SecuredReviewControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,14 +43,14 @@ public class SecuredPostControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private PostService postService;
+    private ReviewService reviewService;
 
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private SecurityUserDetails userDetails;
-
+    @Mock
     private User user;
+    private SecurityUserDetails userDetails;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext) {
@@ -58,7 +60,8 @@ public class SecuredPostControllerTest {
                 .defaultRequest(post("/**").with(csrf()))
                 .build();
 
-        this.user = User.builder()
+
+        this. user = User.builder()
                 .email("test@gmail.com")
                 .role(Role.USER)
                 .build();
@@ -67,40 +70,40 @@ public class SecuredPostControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 업로드 성공 테스트")
-    void savePostTest() throws Exception {
+    @DisplayName("리뷰 등록 테스트")
+    void uploadReview() throws Exception {
         // given
-        PostReq postReq = new PostReq("제목", "내용", "주소", "이름", 20);
+        ReviewReq reviewReq = new ReviewReq("제목", "내용", "http://1234.555");
 
-        doNothing().when(postService).savePost(any(PostReq.class), eq(userDetails.getId()));
+        doNothing().when(reviewService).uploadReview(userDetails.getId(), reviewReq);
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                post("/post/upload")
+                post("/review/upload")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(user(userDetails))
-                        .content(objectMapper.writeValueAsString(postReq))
+                        .content(objectMapper.writeValueAsBytes(reviewReq))
         );
 
         // then
         resultActions
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.response").value("게시글 업로드 완료."));
+                .andExpect(jsonPath("$.response").value("리뷰 업로드 성공"));
     }
 
     @Test
-    @DisplayName("게시글 업로드 실패 테스트 - 조건 불충족")
-    void savePostInvalidTest() throws Exception {
+    @DisplayName("잘못된 리뷰 등록")
+    void uploadWrongReview() throws Exception {
         // given
-        PostReq postReq = new PostReq("", "", "", "", 0);
+        ReviewReq reviewReq = new ReviewReq("", "", "");
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                post("/post/upload")
+                post("/review/upload")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(user(userDetails))
-                        .content(objectMapper.writeValueAsString(postReq))
+                        .content(objectMapper.writeValueAsBytes(reviewReq))
         );
 
         // then
@@ -108,8 +111,6 @@ public class SecuredPostControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.title").value("제목은 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.content").value("내용은 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.name").value("이름은 필수 작성 항목입니다."));
+                .andExpect(jsonPath("$.content").value("내용은 필수 작성 항목입니다."));
     }
 }

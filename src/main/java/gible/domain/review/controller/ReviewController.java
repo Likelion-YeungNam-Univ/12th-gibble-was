@@ -4,6 +4,7 @@ import gible.domain.review.dto.ReviewReq;
 import gible.domain.review.service.ReviewService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.util.api.SuccessRes;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,7 +39,7 @@ public class ReviewController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadReview(
             @AuthenticationPrincipal SecurityUserDetails userDetails,
-            @RequestBody ReviewReq reviewReq
+            @Valid @RequestBody ReviewReq reviewReq
             ) {
         reviewService.uploadReview(userDetails.getId(), reviewReq);
         return ResponseEntity.created(null).body(SuccessRes.from("리뷰 업로드 성공"));
