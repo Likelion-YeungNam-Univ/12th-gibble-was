@@ -63,7 +63,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Participate> participates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
     private List<Review> reviews = new ArrayList<>();
 
     @Builder
