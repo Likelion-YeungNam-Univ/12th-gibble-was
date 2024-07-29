@@ -1,5 +1,6 @@
 package gible.post.service;
 
+import gible.domain.mail.service.MailService;
 import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
@@ -39,6 +40,9 @@ public class PostServiceTest {
     @Mock
     private PostRepository postRepository;
 
+    @Mock
+    private MailService mailService;
+
     @InjectMocks
     private PostService postService;
 
@@ -55,7 +59,7 @@ public class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.postReq = new PostReq("제목", "내용", "주소", "작성자", 20);
+        this.postReq = new PostReq("제목", "내용", "주소", 20);
         this.userId = UUID.randomUUID();
         this.postId = UUID.randomUUID();
 

@@ -4,6 +4,7 @@ import gible.domain.mail.service.MailService;
 import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
+import gible.domain.post.dto.PostTitleRes;
 import gible.domain.post.entity.Post;
 import gible.domain.post.repository.PostRepository;
 import gible.domain.user.entity.User;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -67,6 +69,14 @@ public class PostService {
 
         Page<Post> searchPosts = postRepository.findByTitleContaining(search, pageable);
         return searchPosts.map(PostSummaryRes::fromEntity);
+    }
+
+    /* 작성자의 게시글 불러오기 */
+    @Transactional(readOnly = true)
+    public List<PostTitleRes> getPostByUserId(UUID userId) {
+
+        List<Post> posts = postRepository.findByWriter_Id(userId);
+        return posts.stream().map(PostTitleRes::fromEntity).collect(Collectors.toList());
     }
 
     /* 게시글 수정 */

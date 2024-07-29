@@ -1,18 +1,15 @@
 package gible.domain.donation.controller;
 
-import gible.domain.donation.dto.DonationPostInfoRes;
 import gible.domain.donation.dto.DonationReq;
-import gible.domain.donation.dto.DonationSenderInfoRes;
 import gible.domain.donation.service.DonationService;
-import gible.global.common.response.SuccessRes;
 import gible.domain.security.common.SecurityUserDetails;
+import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -33,24 +30,24 @@ public class DonationController {
 
     /* 게시글에 대한 기부자 목록 불러오기 */
     @GetMapping("/post/{postId}/donators")
-    public List<DonationSenderInfoRes> getDonorsForPost(@PathVariable UUID postId) {
+    public ResponseEntity<?> getDonorsForPost(@PathVariable UUID postId) {
 
-        return donationService.getDonorsForPost(postId);
+        return ResponseEntity.ok().body(donationService.getDonorsForPost(postId));
     }
 
     /* 기부한 게시글에 대한 정보 불러오기 */
     @GetMapping("/donation/my-donation")
-    public List<DonationPostInfoRes> getPostDonationDetails(
+    public ResponseEntity<?> getPostDonationDetails(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
-        return donationService.getPostDonationDetails(userDetails.getId());
+        return ResponseEntity.ok().body(donationService.getPostDonationDetails(userDetails.getId()));
     }
 
     /* 기부해준 사람들의 목록 불러오기 */
     @GetMapping("/donation/received-donation")
-    public List<DonationSenderInfoRes> getDonorsList(
+    public ResponseEntity<?> getDonorsList(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
-        return donationService.getDonorsList(userDetails.getId());
+        return ResponseEntity.ok().body(donationService.getDonorsList(userDetails.getId()));
     }
 }

@@ -1,6 +1,5 @@
 package gible.domain.participate.controller;
 
-import gible.domain.participate.dto.ParticipationEventRes;
 import gible.domain.participate.service.ParticipateService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.common.response.SuccessRes;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -32,10 +30,10 @@ public class ParticipateController {
 
     /* 사용자가 참여한 이벤트 목록 조회하기 */
     @GetMapping("/user/participation-event")
-    public List<ParticipationEventRes> getAllParticipationEvents(
+    public ResponseEntity<?> getAllParticipationEvents(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
-        return participateService.getAllParticipationEvents(userDetails.getId());
+        return ResponseEntity.ok().body(participateService.getAllParticipationEvents(userDetails.getId()));
     }
 }
 

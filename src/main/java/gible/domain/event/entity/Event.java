@@ -32,6 +32,9 @@ public class Event {
     @NotNull
     private String content;
 
+    @Enumerated(EnumType.STRING)
+    private Region region;
+
     @Column(name = "image_url")
     private String imageUrl;
 
