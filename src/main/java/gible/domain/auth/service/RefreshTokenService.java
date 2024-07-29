@@ -1,7 +1,6 @@
 package gible.domain.auth.service;
 
-import gible.global.common.jwt.AccessTokenProvider;
-import gible.global.common.jwt.RefreshTokenProvider;
+import gible.global.util.jwt.JwtHelper;
 import gible.global.util.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -14,22 +13,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenService {
     private final RedisUtil redisUtil;
-    private final RefreshTokenProvider refreshTokenProvider;
+    private final JwtHelper jwtHelper;
 
     @Value("${jwt.refresh-expiration}")
     private Long refreshExpiration;
 
-    public String saveRefreshToken(String email, UUID userId, String role) {
-        String refreshToken = refreshTokenProvider.generateToken(email, userId, role);
-
+    public void saveRefreshToken(UUID userId, String refreshToken) {
         redisUtil.save(userId.toString(), refreshToken);
         redisUtil.saveExpire(userId.toString(), refreshExpiration);
-
-        return refreshToken;
     }
 
     public boolean getRefreshToken(String token) {
-        Claims claims = refreshTokenProvider.parseClaims(token);
+        Claims claims = jwtHelper.parseClaims(token);
         return redisUtil.get(claims.get("userId", String.class));
     }
 
@@ -38,8 +33,8 @@ public class RefreshTokenService {
     }
 
     public String reIssueAccessToken(String refreshToken) {
-        Claims claims = refreshTokenProvider.parseClaims(refreshToken);
-        return refreshTokenProvider.generateToken(
+        Claims claims = jwtHelper.parseClaims(refreshToken);
+        return jwtHelper.generateAccessToken(
                 claims.getSubject(),
                 UUID.fromString(claims.get("userId", String.class)),
                 claims.get("role", String.class)
@@ -49,11 +44,16 @@ public class RefreshTokenService {
     public String reIssueRefreshToken(String refreshToken) {
         this.deleteRefreshToken(refreshToken);
 
-        Claims claims = refreshTokenProvider.parseClaims(refreshToken);
-        return this.saveRefreshToken(
+        Claims claims = jwtHelper.parseClaims(refreshToken);
+        UUID userId = UUID.fromString(claims.get("userId", String.class));
+
+        String newRefreshToken = jwtHelper.generateRefreshToken(
                 claims.getSubject(),
-                UUID.fromString(claims.get("userId", String.class)),
+                userId,
                 claims.get("role", String.class)
         );
+
+        this.saveRefreshToken(userId, newRefreshToken);
+        return newRefreshToken;
     }
 }

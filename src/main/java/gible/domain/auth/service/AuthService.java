@@ -4,13 +4,11 @@ import gible.domain.auth.dto.KakaoUserInfo;
 import gible.domain.auth.dto.SignInReq;
 
 import gible.domain.auth.dto.SignInRes;
-import gible.global.common.jwt.AccessTokenProvider;
 import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
-import gible.global.common.jwt.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
+import gible.global.util.jwt.JwtHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +20,19 @@ import java.util.UUID;
 public class AuthService {
     private final UserService userService;
     private final KakaoService kakaoService;
-    private final JwtTokenProvider accessTokenProvider;
+    private final JwtHelper jwtHelper;
     private final RefreshTokenService refreshTokenService;
 
     @Transactional(readOnly = true)
     public SignInRes login(SignInReq signInReq) {
         KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
-        User user = userService.findByEmail("lth8905@naver.com");
+        User user = userService.findByEmail(kakaoUserInfo.email());
         if(user == null) {
             throw new CustomException(ErrorType.NEED_SIGNUP);
         }
-        String accessToken = accessTokenProvider.generateToken(user.getEmail(), user.getId(), user.getRole().toString());
-        String refreshToken = refreshTokenService.saveRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String accessToken = jwtHelper.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String refreshToken = jwtHelper.generateRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
+        refreshTokenService.saveRefreshToken(user.getId(), refreshToken);
 
         return SignInRes.of(accessToken, refreshToken);
     }
@@ -41,7 +40,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public SignInRes reissueToken(String refreshToken){
         if(!refreshTokenService.getRefreshToken(refreshToken)){
-            throw new CustomException(ErrorType.TOKEN_EXPIRED);
+            throw new CustomException(ErrorType.TOKEN_NOT_FOUND);
         }
         String newAccessToken = refreshTokenService.reIssueAccessToken(refreshToken);
         String newRefreshToken = refreshTokenService.reIssueRefreshToken(refreshToken);
