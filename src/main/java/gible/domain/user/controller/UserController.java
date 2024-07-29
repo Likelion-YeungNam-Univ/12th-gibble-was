@@ -4,7 +4,7 @@ import gible.domain.security.common.SecurityUserDetails;
 import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.dto.SignUpReq;
 import gible.domain.user.service.UserService;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

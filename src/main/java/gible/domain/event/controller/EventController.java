@@ -4,7 +4,7 @@ import gible.domain.event.dto.EventDetailRes;
 import gible.domain.event.dto.EventReq;
 import gible.domain.event.dto.EventSummaryRes;
 import gible.domain.event.service.EventService;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

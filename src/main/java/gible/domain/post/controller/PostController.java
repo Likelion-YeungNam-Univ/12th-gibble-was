@@ -5,7 +5,7 @@ import gible.domain.post.dto.PostReq;
 import gible.domain.post.dto.PostSummaryRes;
 import gible.domain.post.service.PostService;
 import gible.domain.security.common.SecurityUserDetails;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

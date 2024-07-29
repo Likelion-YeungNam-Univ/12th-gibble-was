@@ -3,7 +3,7 @@ package gible.domain.participate.controller;
 import gible.domain.participate.dto.ParticipationEventRes;
 import gible.domain.participate.service.ParticipateService;
 import gible.domain.security.common.SecurityUserDetails;
-import gible.global.util.api.SuccessRes;
+import gible.global.common.response.SuccessRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
