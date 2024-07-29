@@ -1,6 +1,5 @@
 package gible.domain.user.controller;
 
-import gible.domain.post.dto.PostTitleRes;
 import gible.domain.post.service.PostService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.domain.user.dto.MyPageRes;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,9 +32,9 @@ public class UserController {
     }
 
     @GetMapping("/posts")
-    public List<PostTitleRes> getPostByUserId(@AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<?> getPostByUserId(@AuthenticationPrincipal SecurityUserDetails userDetails) {
 
-        return postService.getPostByUserId(userDetails.getId());
+        return ResponseEntity.ok().body(postService.getPostByUserId(userDetails.getId()));
     }
 
 //    @GetMapping("/participation-event")

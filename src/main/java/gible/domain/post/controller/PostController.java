@@ -1,14 +1,11 @@
 package gible.domain.post.controller;
 
-import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
-import gible.domain.post.dto.PostSummaryRes;
 import gible.domain.post.service.PostService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -36,21 +33,21 @@ public class PostController {
 
     /* 게시글 목록 조회 + 검색 조회 */
     @GetMapping
-    public Page<PostSummaryRes> getAllPosts(
+    public ResponseEntity<?> getAllPosts(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(name = "search", required = false) String search) {
 
         if (search == null)
-            return postService.getAllPosts(pageable);
+            return ResponseEntity.ok().body(postService.getAllPosts(pageable));
 
-        return postService.getPostsByKeyword(search, pageable);
+        return ResponseEntity.ok().body(postService.getPostsByKeyword(search, pageable));
     }
 
     /* 특정 게시글 조회 */
     @GetMapping("/{postId}")
-    public PostDetailRes getPost(@PathVariable UUID postId) {
+    public ResponseEntity<?> getPost(@PathVariable UUID postId) {
 
-        return postService.getPost(postId);
+        return ResponseEntity.ok().body(postService.getPost(postId));
     }
 
     /* 게시글 수정 */

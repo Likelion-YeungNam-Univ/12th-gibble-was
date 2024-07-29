@@ -1,14 +1,11 @@
 package gible.domain.event.controller;
 
-import gible.domain.event.dto.EventDetailRes;
 import gible.domain.event.dto.EventReq;
-import gible.domain.event.dto.EventSummaryRes;
 import gible.domain.event.entity.Region;
 import gible.domain.event.service.EventService;
 import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -35,20 +32,20 @@ EventController {
 
     /* 이벤트 목록 조회 */
     @GetMapping
-    public Page<EventSummaryRes> getAllEvents(
+    public ResponseEntity<?> getAllEvents(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(name = "region", required = false) Region region) {
 
         if (region == null)
-            return eventService.getAllEvents(pageable);;
-        return eventService.getAllEventsByRegion(region, pageable);
+            return ResponseEntity.ok().body(eventService.getAllEvents(pageable));
+        return ResponseEntity.ok().body(eventService.getAllEventsByRegion(region, pageable));
     }
 
     /* 특정 이벤트 조회 */
     @GetMapping("/{eventId}")
-    public EventDetailRes getEvent(@PathVariable UUID eventId) {
+    public ResponseEntity<?> getEvent(@PathVariable UUID eventId) {
 
-        return eventService.getEvent(eventId);
+        return ResponseEntity.ok().body(eventService.getEvent(eventId));
     }
 
     /* 이벤트 수정 */
