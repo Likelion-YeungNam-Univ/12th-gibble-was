@@ -9,5 +9,4 @@ class GibleApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
