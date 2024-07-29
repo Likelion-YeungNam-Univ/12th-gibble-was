@@ -41,7 +41,7 @@ public class EventService {
     @Transactional(readOnly = true)
     public Page<EventSummaryRes> getAllEventsByRegion(Region region, Pageable pageable) {
 
-        Page<Event> events = eventRepository.findByRegion(region);
+        Page<Event> events = eventRepository.findByRegion(region, pageable);
         return events.map(EventSummaryRes::fromEntity);
     }
 
