@@ -39,7 +39,9 @@ spring:
 
 web:
   post-url: ${WEB_POST_URL}
-
+firebase:
+  key: ${FIREBASE_KEY}
+  bucket-name: ${FIREBASE_BUCKET_NAME}
 jwt:
   secret: ${JWT_SECRET}
   access-expiration: ${JWT_ACCESS_EXPIRATION}

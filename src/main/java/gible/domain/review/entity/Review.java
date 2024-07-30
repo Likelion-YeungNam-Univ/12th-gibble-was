@@ -30,6 +30,8 @@ public class Review {
 
     private String imageUrl;
 
+    private String reviewImageId;
+
     @Column(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;
@@ -39,10 +41,11 @@ public class Review {
     private User writer;
 
     @Builder
-    public Review(String title, String content, String imageUrl, User writer) {
+    public Review(String title, String content, String imageUrl, User writer, String reviewImageId) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
         this.writer = writer;
+        this.reviewImageId = reviewImageId;
     }
 }

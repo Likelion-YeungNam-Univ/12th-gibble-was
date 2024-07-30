@@ -30,7 +30,8 @@ public class SecurityConfig {
                                         "/user",
                                         "/webjars/**",
                                         "/error",
-                                        "/auth/logout"
+                                        "/auth/logout",
+                                        "/review/ssibal"
                                 ).permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
