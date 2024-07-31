@@ -21,18 +21,10 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-    private final CookieUtil cookieUtil;
 
     @PostMapping("/kakaologin")
     public ResponseEntity<?> login(@Valid @RequestBody SignInReq signInReq) {
-        SignInRes signInRes = authService.login(signInReq);
-
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("accessToken", signInRes.accessToken());
-
-        return ResponseEntity.ok().header("Set-Cookie",
-                cookieUtil.addRtkCookie("refreshToken", signInRes.refreshToken()).toString())
-                .body(responseBody);
+        return authService.login(signInReq);
     }
 
     @PostMapping("logout")
