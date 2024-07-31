@@ -70,7 +70,7 @@ public class SecuredPostControllerTest {
     @DisplayName("게시글 업로드 성공 테스트")
     void savePostTest() throws Exception {
         // given
-        PostReq postReq = new PostReq("제목", "내용", "주소", "이름", 20);
+        PostReq postReq = new PostReq("제목", "내용", "주소", 20);
 
         doNothing().when(postService).savePost(any(PostReq.class), eq(userDetails.getId()));
 
@@ -93,7 +93,7 @@ public class SecuredPostControllerTest {
     @DisplayName("게시글 업로드 실패 테스트 - 조건 불충족")
     void savePostInvalidTest() throws Exception {
         // given
-        PostReq postReq = new PostReq("", "", "", "", 0);
+        PostReq postReq = new PostReq("", "", "", 0);
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -109,7 +109,6 @@ public class SecuredPostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.title").value("제목은 필수 작성 항목입니다."))
                 .andExpect(jsonPath("$.content").value("내용은 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.name").value("이름은 필수 작성 항목입니다."));
+                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."));
     }
 }

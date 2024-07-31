@@ -4,6 +4,7 @@ import gible.domain.event.dto.EventDetailRes;
 import gible.domain.event.dto.EventReq;
 import gible.domain.event.dto.EventSummaryRes;
 import gible.domain.event.entity.Event;
+import gible.domain.event.entity.Region;
 import gible.domain.event.repository.EventRepository;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
@@ -33,6 +34,14 @@ public class EventService {
     public Page<EventSummaryRes> getAllEvents(Pageable pageable) {
 
         Page<Event> events = eventRepository.findAll(pageable);
+        return events.map(EventSummaryRes::fromEntity);
+    }
+
+    /* 이벤트 목록 조회 (지역별) */
+    @Transactional(readOnly = true)
+    public Page<EventSummaryRes> getAllEventsByRegion(Region region, Pageable pageable) {
+
+        Page<Event> events = eventRepository.findByRegion(region, pageable);
         return events.map(EventSummaryRes::fromEntity);
     }
 

@@ -9,7 +9,8 @@ public record ReviewReq(
         String title,
         @NotBlank(message = "내용은 필수 작성 항목입니다.")
         String content,
-        String imageUrl
+        String imageUrl,
+        String imageId
 ) {
     public static Review toEntity(ReviewReq reviewReq, User user) {
         return Review.builder()
@@ -17,6 +18,7 @@ public record ReviewReq(
                 .content(reviewReq.content())
                 .imageUrl(reviewReq.imageUrl())
                 .writer(user)
+                .reviewImageId(reviewReq.imageId())
                 .build();
     }
 }

@@ -9,10 +9,15 @@ import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
 import gible.global.util.jwt.JwtHelper;
+import gible.global.util.cookie.CookieUtil;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -22,19 +27,24 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final JwtHelper jwtHelper;
     private final RefreshTokenService refreshTokenService;
-
+    private final CookieUtil cookieUtil;
     @Transactional(readOnly = true)
-    public SignInRes login(SignInReq signInReq) {
+    public ResponseEntity<?> login(SignInReq signInReq) {
         KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
         User user = userService.findByEmail(kakaoUserInfo.email());
         if(user == null) {
-            throw new CustomException(ErrorType.NEED_SIGNUP);
+            return ResponseEntity.status(510).body(kakaoUserInfo);
         }
         String accessToken = jwtHelper.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
         String refreshToken = jwtHelper.generateRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
         refreshTokenService.saveRefreshToken(user.getId(), refreshToken);
 
-        return SignInRes.of(accessToken, refreshToken);
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("accessToken", accessToken);
+
+        return ResponseEntity.ok().header("Set-Cookie",
+                        cookieUtil.addRtkCookie("refreshToken", refreshToken).toString())
+                .body(responseBody);
     }
 
     @Transactional(readOnly = true)

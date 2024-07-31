@@ -27,7 +27,7 @@ public record SignUpReq(
                 .phoneNumber(signUpDto.phoneNumber())
                 .nickname(signUpDto.nickname())
                 .emailAgree(signUpDto.emailAgree())
-                .role(Role.valueOf(signUpDto.role()))
+                .role(Role.USER)
                 .build();
     }
 }

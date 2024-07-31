@@ -1,6 +1,7 @@
 package gible.domain.review.controller;
 
 import gible.domain.review.dto.ReviewReq;
+import gible.domain.review.repository.ReviewDao;
 import gible.domain.review.service.ReviewService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.common.response.SuccessRes;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/review")
 public class ReviewController {
     private final ReviewService reviewService;
-
+    private final ReviewDao reviewDao;
     /* 리뷰 목록 가져오기 */
     @GetMapping("")
     public ResponseEntity<?> getReviews(
@@ -51,4 +52,5 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
         return ResponseEntity.ok(SuccessRes.from("리뷰 삭제 성공"));
     }
+
 }

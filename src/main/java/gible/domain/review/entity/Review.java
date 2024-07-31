@@ -8,12 +8,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
     @Id
@@ -28,6 +30,8 @@ public class Review {
 
     private String imageUrl;
 
+    private String reviewImageId;
+
     @Column(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;
@@ -37,10 +41,11 @@ public class Review {
     private User writer;
 
     @Builder
-    public Review(String title, String content, String imageUrl, User writer) {
+    public Review(String title, String content, String imageUrl, User writer, String reviewImageId) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
         this.writer = writer;
+        this.reviewImageId = reviewImageId;
     }
 }

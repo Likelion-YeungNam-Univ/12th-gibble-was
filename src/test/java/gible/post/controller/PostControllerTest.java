@@ -182,8 +182,7 @@ public class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("제목1"))
                 .andExpect(jsonPath("$.content").value("내용1"))
-                .andExpect(jsonPath("$.address").value("주소1"))
-                .andExpect(jsonPath("$.name").value("작성자1"));
+                .andExpect(jsonPath("$.address").value("주소1"));
     }
 
     @Test
@@ -191,7 +190,7 @@ public class PostControllerTest {
     void updatePostTest() throws Exception {
         // given
         PostReq updatePostReq =
-                new PostReq("제목수정", "내용수정", "주소수정", "이름수정", 30);
+                new PostReq("제목수정", "내용수정", "주소수정", 30);
 
         doNothing().when(postService).updatePost(updatePostReq, postId);
 
@@ -214,7 +213,7 @@ public class PostControllerTest {
     void updatePostFailedByPostNotFoundTest() throws Exception {
         // given
         PostReq updatePostReq =
-                new PostReq("제목수정", "내용수정", "주소수정", "이름수정", 30);
+                new PostReq("제목수정", "내용수정", "주소수정", 30);
         doThrow(new CustomException(ErrorType.POST_NOT_FOUND)).when(postService).updatePost(updatePostReq, postId);
 
         // when
@@ -235,7 +234,7 @@ public class PostControllerTest {
     @DisplayName("게시글 수정 실패 테스트 - 조건 불충족")
     void updatePostInvalidTest() throws Exception {
         // given
-        PostReq postReq = new PostReq("", "", "", "", 0);
+        PostReq postReq = new PostReq("", "", "", 0);
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -250,8 +249,7 @@ public class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.title").value("제목은 필수 작성 항목입니다."))
                 .andExpect(jsonPath("$.content").value("내용은 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."))
-                .andExpect(jsonPath("$.name").value("이름은 필수 작성 항목입니다."));
+                .andExpect(jsonPath("$.address").value("주소는 필수 작성 항목입니다."));
     }
 
     @Test

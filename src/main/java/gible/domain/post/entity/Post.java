@@ -37,9 +37,6 @@ public class Post {
     private String address;
 
     @NotNull
-    private String name;
-
-    @NotNull
     @Column(name = "wanted_card")
     private int wantedCard;
 
@@ -62,7 +59,6 @@ public class Post {
         this.title = title;
         this.content = content;
         this.address = address;
-        this.name = name;
         this.wantedCard = wantedCard;
         this.writer = writer;
     }
@@ -72,7 +68,6 @@ public class Post {
         this.title = postReq.title();
         this.content = postReq.content();
         this.address = postReq.address();
-        this.name = postReq.name();
         this.wantedCard = postReq.wantedCard();
     }
 

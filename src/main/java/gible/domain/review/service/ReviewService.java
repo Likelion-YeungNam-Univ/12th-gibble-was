@@ -3,17 +3,18 @@ package gible.domain.review.service;
 import gible.domain.review.dto.ReviewDetailRes;
 import gible.domain.review.dto.ReviewReq;
 import gible.domain.review.dto.ReviewSummaryRes;
+import gible.domain.review.entity.Review;
 import gible.domain.review.repository.ReviewRepository;
 import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
+import gible.global.util.FirebaseDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
+    private final FirebaseDao reviewDao;
 
     @Transactional(readOnly = true)
     public Page<ReviewSummaryRes> getReviews(Pageable pageable) {
@@ -42,6 +44,8 @@ public class ReviewService {
 
     @Transactional
     public void deleteReview(UUID reviewId) {
-        reviewRepository.deleteById(reviewId);
+        Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CustomException(ErrorType.EVENT_NOT_FOUND));
+        reviewDao.delete(review.getReviewImageId());
+        reviewRepository.delete(review);
     }
 }

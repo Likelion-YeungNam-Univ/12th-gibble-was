@@ -1,5 +1,6 @@
 package gible.domain.user.controller;
 
+import gible.domain.post.service.PostService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.dto.SignUpReq;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final PostService postService;
 
     @PostMapping("/signUp")
     public ResponseEntity<?> SignUp(@Valid @RequestBody  SignUpReq signUpReq){
@@ -27,6 +29,12 @@ public class UserController {
             @AuthenticationPrincipal SecurityUserDetails userDetails
     ){
         return ResponseEntity.ok().body(userService.getMyPage(userDetails.getId()));
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<?> getPostByUserId(@AuthenticationPrincipal SecurityUserDetails userDetails) {
+
+        return ResponseEntity.ok().body(postService.getPostByUserId(userDetails.getId()));
     }
 
 //    @GetMapping("/participation-event")
