@@ -54,12 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public boolean validateToken(String token) {
         Claims claims = jwtHelper.parseClaims(token);
-        if(claims == null){
-            throw new CustomException(ErrorType.INVALID_TOKEN);
-        }
-        if(claims.getExpiration().before(new Date())){
-            throw new CustomException(ErrorType.TOKEN_EXPIRED);
-        }
         return !claims.getExpiration().before(new Date());
     }
 
