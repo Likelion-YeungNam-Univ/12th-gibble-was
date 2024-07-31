@@ -2,8 +2,6 @@ package gible.domain.security.jwt;
 
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
-import gible.global.common.jwt.AccessTokenProvider;
-import gible.global.common.jwt.JwtTokenProvider;
 import gible.global.util.jwt.JwtHelper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
