@@ -33,7 +33,7 @@ public class AuthService {
         KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
         User user = userService.findByEmail(kakaoUserInfo.email());
         if(user == null) {
-            return ResponseEntity.status(510).body(kakaoUserInfo.email());
+            return ResponseEntity.status(510).body(kakaoUserInfo);
         }
 
         String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
