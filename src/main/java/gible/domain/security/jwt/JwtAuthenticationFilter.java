@@ -4,6 +4,7 @@ import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
 import gible.global.common.jwt.AccessTokenProvider;
 import gible.global.common.jwt.JwtTokenProvider;
+import gible.global.util.jwt.JwtHelper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +26,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtHelper jwtHelper;
     private final UserDetailsService userDetailsService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = jwtTokenProvider.parseClaims(token);
+        Claims claims = jwtHelper.parseClaims(token);
         String email = claims.getSubject();
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -54,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public boolean validateToken(String token) {
-        Claims claims = jwtTokenProvider.parseClaims(token);
+        Claims claims = jwtHelper.parseClaims(token);
         if(claims == null){
             throw new CustomException(ErrorType.INVALID_TOKEN);
         }
