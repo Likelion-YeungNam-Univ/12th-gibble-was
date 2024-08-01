@@ -90,6 +90,7 @@ public interface PostApi {
     ResponseEntity<?> getAllPosts(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable,
             @RequestParam(name = "search", required = false) String search);
+
     @Operation(summary = "특정 게시글 가져오기", description = "특정 게시글을 조회하기 위한 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "게시글 가져오기 성공",
@@ -104,8 +105,32 @@ public interface PostApi {
     })
     ResponseEntity<?> getPost(@PathVariable UUID postId);
 
+    @Operation(summary = "게시글 수정", description = "게시글을 수정하기 위한 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "게시글 수정하기 성공",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(value = """
+                                        {
+                                            "response": "게시글 수정 완료"
+                                        }
+                                    """)
+                    })
+            )
+    })
     ResponseEntity<?> updatePost(@Valid @RequestBody PostReq postReq,
                                  @PathVariable UUID postId);
 
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제하기 위한 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "게시글 삭제하기 성공",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(value = """
+                                        {
+                                            "response": "게시글 삭제 완료"
+                                        }
+                                    """)
+                    })
+            )
+    })
     ResponseEntity<?> deletePost(@PathVariable UUID postId);
 }
