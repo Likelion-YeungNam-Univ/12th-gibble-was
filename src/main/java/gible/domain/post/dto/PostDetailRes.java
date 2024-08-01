@@ -11,7 +11,7 @@ public record PostDetailRes(
         String address,
         String name,
         int wantedCard,
-        int donatedCare,
+        int donatedCard,
         String phoneNumber,
         String writer,
         UUID writerId
@@ -19,7 +19,7 @@ public record PostDetailRes(
     public static PostDetailRes fromEntity(Post post) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
-                post.getWriter().getName(), post.getWantedCard(), post.getDonatedCare(),
+                post.getWriter().getName(), post.getWantedCard(), post.getDonatedCard(),
                 post.getWriter().getPhoneNumber(), post.getWriter().getNickname(), post.getWriter().getId());
     }
 }

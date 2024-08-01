@@ -8,11 +8,14 @@ import java.util.UUID;
 public record PostSummaryRes(
         UUID postId,
         String title,
+        int wantedCard,
+        int donatedCard,
         LocalDateTime createdAt,
         String writer
 ) {
     public static PostSummaryRes fromEntity(Post post) {
         return new PostSummaryRes(
-                post.getId(), post.getTitle(), post.getCreatedAt(), post.getWriter().getNickname());
+                post.getId(), post.getTitle(), post.getWantedCard(),
+                post.getDonatedCard(), post.getCreatedAt(), post.getWriter().getNickname());
     }
 }

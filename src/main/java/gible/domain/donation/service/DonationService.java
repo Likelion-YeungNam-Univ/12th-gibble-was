@@ -38,7 +38,7 @@ public class DonationService {
                 new CustomException(ErrorType.POST_NOT_FOUND));
 
         Donation donation = DonationReq.toEntity(donationReq, foundUser, foundPost);
-        foundPost.updateDonatedCare(donationReq.donateCount());     // 게시글에 기부한 개수 업데이트.
+        foundPost.updateDonatedCard(donationReq.donateCount());     // 게시글에 기부한 개수 업데이트.
 
         donationRepository.save(donation);
     }

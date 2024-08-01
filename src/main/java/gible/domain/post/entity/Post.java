@@ -44,8 +44,8 @@ public class Post {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "donated_care")
-    private int donatedCare;
+    @Column(name = "donated_card")
+    private int donatedCard;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
@@ -55,7 +55,7 @@ public class Post {
     private List<Donation> donations = new ArrayList<>();
 
     @Builder
-    public Post(String title, String content, String address, String name, int wantedCard, User writer) {
+    public Post(String title, String content, String address, int wantedCard, User writer) {
         this.title = title;
         this.content = content;
         this.address = address;
@@ -78,7 +78,7 @@ public class Post {
     }
 
     /* 게시글에 기부한 개수 업데이트 */
-    public void updateDonatedCare(int donatedCare) {
-        this.donatedCare += donatedCare;
+    public void updateDonatedCard(int donatedCard) {
+        this.donatedCard += donatedCard;
     }
 }
