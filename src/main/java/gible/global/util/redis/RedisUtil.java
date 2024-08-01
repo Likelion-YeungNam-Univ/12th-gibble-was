@@ -21,7 +21,7 @@ public class RedisUtil {
     }
 
     public boolean get(String key){
-        return redisTemplate.opsForValue().get(key) == null;
+        return redisTemplate.opsForValue().get(key) != null;
     }
 
     public void delete(String userId) {

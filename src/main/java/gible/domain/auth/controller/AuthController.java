@@ -2,9 +2,7 @@ package gible.domain.auth.controller;
 
 
 import gible.domain.auth.dto.SignInReq;
-import gible.domain.auth.dto.SignInRes;
 import gible.domain.auth.service.AuthService;
-import gible.global.util.cookie.CookieUtil;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
@@ -13,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +23,7 @@ public class AuthController {
         return authService.login(signInReq);
     }
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@AuthenticationPrincipal SecurityUserDetails userDetails){
         authService.logout(userDetails.getId());
         return ResponseEntity.ok(SuccessRes.from("로그아웃 성공"));

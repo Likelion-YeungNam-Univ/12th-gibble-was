@@ -34,9 +34,8 @@ public class PostController {
     /* 게시글 목록 조회 + 검색 조회 */
     @GetMapping
     public ResponseEntity<?> getAllPosts(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 12) Pageable pageable,
             @RequestParam(name = "search", required = false) String search) {
-
         if (search == null)
             return ResponseEntity.ok().body(postService.getAllPosts(pageable));
 

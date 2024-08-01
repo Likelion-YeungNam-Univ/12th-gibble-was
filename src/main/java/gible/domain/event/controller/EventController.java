@@ -33,7 +33,7 @@ EventController {
     /* 이벤트 목록 조회 */
     @GetMapping
     public ResponseEntity<?> getAllEvents(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 12) Pageable pageable,
             @RequestParam(name = "region", required = false) Region region) {
 
         if (region == null)
