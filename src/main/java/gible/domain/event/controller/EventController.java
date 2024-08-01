@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ EventController {
     public ResponseEntity<?> saveEvent(@Valid @RequestBody EventReq eventReq) {
 
         eventService.saveEvent(eventReq);
-        return ResponseEntity.created(null).body(SuccessRes.from("이벤트 작성 성공."));
+        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("이벤트 작성 성공."));
     }
 
     /* 이벤트 목록 조회 */

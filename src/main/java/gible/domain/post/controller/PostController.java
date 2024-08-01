@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class PostController {
                                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         postService.savePost(postReq, userDetails.getId());
-        return ResponseEntity.created(null).body(SuccessRes.from("게시글 업로드 완료."));
+        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("게시글 업로드 완료."));
     }
 
     /* 게시글 목록 조회 + 검색 조회 */
