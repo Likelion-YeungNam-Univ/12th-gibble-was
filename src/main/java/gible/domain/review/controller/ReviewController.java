@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class ReviewController {
             @Valid @RequestBody ReviewReq reviewReq
             ) {
         reviewService.uploadReview(userDetails.getId(), reviewReq);
-        return ResponseEntity.created(null).body(SuccessRes.from("리뷰 업로드 성공"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("리뷰 업로드 성공"));
     }
 
     @DeleteMapping("/{reviewId}")

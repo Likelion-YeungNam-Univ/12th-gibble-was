@@ -4,11 +4,11 @@ import gible.domain.auth.dto.KakaoUserInfo;
 import gible.domain.auth.dto.SignInReq;
 
 import gible.domain.auth.dto.SignInRes;
-import gible.domain.security.jwt.JwtTokenProvider;
 import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
+import gible.global.util.jwt.JwtHelper;
 import gible.global.util.cookie.CookieUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.UUID;
 public class AuthService {
     private final UserService userService;
     private final KakaoService kakaoService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtHelper jwtHelper;
     private final RefreshTokenService refreshTokenService;
     private final CookieUtil cookieUtil;
     @Transactional(readOnly = true)
@@ -35,9 +35,9 @@ public class AuthService {
         if(user == null) {
             return ResponseEntity.status(510).body(kakaoUserInfo);
         }
-
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
-        String refreshToken = refreshTokenService.saveRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String accessToken = jwtHelper.generateAccessToken(user.getEmail(), user.getId(), user.getRole().toString());
+        String refreshToken = jwtHelper.generateRefreshToken(user.getEmail(), user.getId(), user.getRole().toString());
+        refreshTokenService.saveRefreshToken(user.getId(), refreshToken);
 
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("accessToken", accessToken);
@@ -49,9 +49,8 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public SignInRes reissueToken(String refreshToken){
-        Claims claims = jwtTokenProvider.parseClaims(refreshToken);
-        if(!refreshTokenService.getRefreshToken(claims.get("userId", String.class))){
-            throw new CustomException(ErrorType.TOKEN_EXPIRED);
+        if(!refreshTokenService.getRefreshToken(refreshToken)){
+            throw new CustomException(ErrorType.TOKEN_NOT_FOUND);
         }
         String newAccessToken = refreshTokenService.reIssueAccessToken(refreshToken);
         String newRefreshToken = refreshTokenService.reIssueRefreshToken(refreshToken);
