@@ -25,7 +25,7 @@ public interface PostApi {
 
     @Operation(summary = "게시글 생성", description = "게시글을 생성하기 위한 API")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "게시글 생성 성공",
+            @ApiResponse(responseCode = "201", description = "게시글 생성 성공",
                     content = @Content(mediaType = "application/json", examples = {
                             @ExampleObject(value = """
                                         {
