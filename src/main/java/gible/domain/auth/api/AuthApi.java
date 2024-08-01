@@ -72,6 +72,4 @@ public interface AuthApi {
             )
     })
     public ResponseEntity<?> withdraw(@AuthenticationPrincipal SecurityUserDetails userDetails);
-
-
 }
