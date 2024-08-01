@@ -55,3 +55,7 @@ oauth2:
     clientId: ${CLIENT_ID}
     redirectUri: ${REDIRECT_URL}
     getUserInfoUri: https://kapi.kakao.com/v2/user/me
+
+domain:
+  local: ${LOCAL_DOMAIN}
+  server: ${SERVER_DOMAIN}
