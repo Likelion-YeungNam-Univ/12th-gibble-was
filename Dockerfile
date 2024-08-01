@@ -5,7 +5,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x ./gradlew
-RUN microdnf install findutils
+RUN apk add --no-cache findutils
 RUN ./gradlew build -x test
 
 FROM openjdk:17-alpine
