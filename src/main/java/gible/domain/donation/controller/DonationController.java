@@ -1,5 +1,6 @@
 package gible.domain.donation.controller;
 
+import gible.domain.donation.api.DonationApi;
 import gible.domain.donation.dto.DonationReq;
 import gible.domain.donation.service.DonationService;
 import gible.domain.security.common.SecurityUserDetails;
@@ -14,11 +15,12 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-public class DonationController {
+public class DonationController implements DonationApi {
 
     private final DonationService donationService;
 
     /* 기부하기 */
+    @Override
     @PostMapping("/post/{postId}/donate")
     public ResponseEntity<?> donate(@Valid @RequestBody DonationReq donationReq,
                                     @PathVariable UUID postId,
@@ -29,6 +31,7 @@ public class DonationController {
     }
 
     /* 게시글에 대한 기부자 목록 불러오기 */
+    @Override
     @GetMapping("/post/{postId}/donators")
     public ResponseEntity<?> getDonorsForPost(@PathVariable UUID postId) {
 
@@ -36,6 +39,7 @@ public class DonationController {
     }
 
     /* 기부한 게시글에 대한 정보 불러오기 */
+    @Override
     @GetMapping("/donation/my-donation")
     public ResponseEntity<?> getPostDonationDetails(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -44,6 +48,7 @@ public class DonationController {
     }
 
     /* 기부해준 사람들의 목록 불러오기 */
+    @Override
     @GetMapping("/donation/received-donation")
     public ResponseEntity<?> getDonorsList(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {

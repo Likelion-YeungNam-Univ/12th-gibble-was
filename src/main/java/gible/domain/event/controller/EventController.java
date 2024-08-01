@@ -1,5 +1,6 @@
 package gible.domain.event.controller;
 
+import gible.domain.event.api.EventApi;
 import gible.domain.event.dto.EventReq;
 import gible.domain.event.entity.Region;
 import gible.domain.event.service.EventService;
@@ -18,12 +19,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/event")
 @RestController
-public class
-EventController {
+public class EventController implements EventApi {
 
     private final EventService eventService;
 
     /* 이벤트 등록 */
+    @Override
     @PostMapping("/upload")
     public ResponseEntity<?> saveEvent(@Valid @RequestBody EventReq eventReq) {
 
@@ -32,6 +33,7 @@ EventController {
     }
 
     /* 이벤트 목록 조회 */
+    @Override
     @GetMapping
     public ResponseEntity<?> getAllEvents(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 12) Pageable pageable,
@@ -43,6 +45,7 @@ EventController {
     }
 
     /* 특정 이벤트 조회 */
+    @Override
     @GetMapping("/{eventId}")
     public ResponseEntity<?> getEvent(@PathVariable UUID eventId) {
 
@@ -50,6 +53,7 @@ EventController {
     }
 
     /* 이벤트 수정 */
+    @Override
     @PutMapping("/upload/{eventId}")
     public ResponseEntity<?> updateEvent(@Valid @RequestBody EventReq updateEventReq,
                                          @PathVariable UUID eventId) {
@@ -59,6 +63,7 @@ EventController {
     }
 
     /* 이벤트 삭제 */
+    @Override
     @DeleteMapping("/{eventId}")
     public ResponseEntity<?> deleteEvent(@PathVariable UUID eventId) {
 

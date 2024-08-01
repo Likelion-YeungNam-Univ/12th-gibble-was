@@ -1,5 +1,6 @@
 package gible.domain.post.controller;
 
+import gible.domain.post.api.PostApi;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.service.PostService;
 import gible.domain.security.common.SecurityUserDetails;
@@ -19,11 +20,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/post")
 @RestController
-public class PostController {
+public class PostController implements PostApi {
 
     private final PostService postService;
 
     /* 게시글 업로드 */
+    @Override
     @PostMapping("/upload")
     public ResponseEntity<?> savePost(@Valid @RequestBody PostReq postReq,
                                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -33,6 +35,7 @@ public class PostController {
     }
 
     /* 게시글 목록 조회 + 검색 조회 */
+    @Override
     @GetMapping
     public ResponseEntity<?> getAllPosts(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable,
@@ -44,6 +47,7 @@ public class PostController {
     }
 
     /* 특정 게시글 조회 */
+    @Override
     @GetMapping("/{postId}")
     public ResponseEntity<?> getPost(@PathVariable UUID postId) {
 
@@ -51,6 +55,7 @@ public class PostController {
     }
 
     /* 게시글 수정 */
+    @Override
     @PutMapping("/upload/{postId}")
     public ResponseEntity<?> updatePost(@Valid @RequestBody PostReq postReq,
                                         @PathVariable UUID postId) {
@@ -60,6 +65,7 @@ public class PostController {
     }
 
     /* 게시글 삭제 */
+    @Override
     @DeleteMapping("/{postId}")
     public ResponseEntity<?> deletePost(@PathVariable UUID postId) {
 

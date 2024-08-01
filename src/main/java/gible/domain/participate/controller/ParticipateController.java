@@ -1,5 +1,6 @@
 package gible.domain.participate.controller;
 
+import gible.domain.participate.api.ParticipateApi;
 import gible.domain.participate.service.ParticipateService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.common.response.SuccessRes;
@@ -15,11 +16,12 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-public class ParticipateController {
+public class ParticipateController implements ParticipateApi {
 
     private final ParticipateService participateService;
 
     /* 이벤트 참여 */
+    @Override
     @PostMapping("/event/{eventId}/participation")
     public ResponseEntity<?> participationEvent(@AuthenticationPrincipal SecurityUserDetails userDetails,
                                                 @PathVariable UUID eventId) {
@@ -29,6 +31,7 @@ public class ParticipateController {
     }
 
     /* 사용자가 참여한 이벤트 목록 조회하기 */
+    @Override
     @GetMapping("/user/participation-event")
     public ResponseEntity<?> getAllParticipationEvents(
             @AuthenticationPrincipal SecurityUserDetails userDetails) {

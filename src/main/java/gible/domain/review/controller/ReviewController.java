@@ -1,7 +1,7 @@
 package gible.domain.review.controller;
 
+import gible.domain.review.api.ReviewApi;
 import gible.domain.review.dto.ReviewReq;
-import gible.domain.review.repository.ReviewDao;
 import gible.domain.review.service.ReviewService;
 import gible.domain.security.common.SecurityUserDetails;
 import gible.global.common.response.SuccessRes;
@@ -20,10 +20,11 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/review")
-public class ReviewController {
+public class ReviewController implements ReviewApi {
     private final ReviewService reviewService;
-    private final ReviewDao reviewDao;
+
     /* 리뷰 목록 가져오기 */
+    @Override
     @GetMapping("")
     public ResponseEntity<?> getReviews(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -32,12 +33,14 @@ public class ReviewController {
     }
 
     /* 리뷰 가져오기 */
+    @Override
     @GetMapping("/{reviewId}")
     public ResponseEntity<?> getReview(@PathVariable UUID reviewId) {
         return ResponseEntity.ok(reviewService.getReview(reviewId));
     }
 
     /* 리뷰 업로드 */
+    @Override
     @PostMapping("/upload")
     public ResponseEntity<?> uploadReview(
             @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -47,6 +50,7 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("리뷰 업로드 성공"));
     }
 
+    @Override
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable UUID reviewId) {
         reviewService.deleteReview(reviewId);
