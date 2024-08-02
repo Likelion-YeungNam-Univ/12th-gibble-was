@@ -2,15 +2,12 @@ package gible.domain.auth.service;
 
 import gible.domain.auth.dto.KakaoUserInfo;
 import gible.domain.auth.dto.SignInReq;
-
-import gible.domain.auth.dto.SignInRes;
 import gible.domain.user.entity.User;
 import gible.domain.user.service.UserService;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
-import gible.global.util.jwt.JwtHelper;
 import gible.global.util.cookie.CookieUtil;
-import io.jsonwebtoken.Claims;
+import gible.global.util.jwt.JwtHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -48,13 +45,18 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public SignInRes reissueToken(String refreshToken){
+    public ResponseEntity<?> reissueToken(String refreshToken){
         if(!refreshTokenService.getRefreshToken(refreshToken)){
             throw new CustomException(ErrorType.TOKEN_NOT_FOUND);
         }
         String newAccessToken = refreshTokenService.reIssueAccessToken(refreshToken);
         String newRefreshToken = refreshTokenService.reIssueRefreshToken(refreshToken);
-        return SignInRes.of(newAccessToken, newRefreshToken);
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("accessToken", newAccessToken);
+
+        return ResponseEntity.ok().header("Set-Cookie",
+                        cookieUtil.addRtkCookie("refreshToken", refreshToken).toString())
+                .body(responseBody);
     }
 
     public void logout(UUID userId) {
