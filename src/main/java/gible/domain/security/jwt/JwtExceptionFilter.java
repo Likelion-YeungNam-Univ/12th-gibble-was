@@ -30,10 +30,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e){
             log.info("expiredJwtEcxeption");
             ErrorType errorType = ErrorType.TOKEN_EXPIRED;
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(objectMapper.writeValueAsString(ErrorRes.of(errorType.getStatus(), errorType.getMessage())));
         } catch (JwtException e){
             log.info("JwtException");
             ErrorType errorType = ErrorType.TOKEN_NOT_FOUND;
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.getWriter().write(objectMapper.writeValueAsString(ErrorRes.of(errorType.getStatus(), errorType.getMessage())));
         }
     }
