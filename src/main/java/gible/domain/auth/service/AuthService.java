@@ -25,6 +25,7 @@ public class AuthService {
     private final JwtHelper jwtHelper;
     private final RefreshTokenService refreshTokenService;
     private final CookieUtil cookieUtil;
+
     @Transactional(readOnly = true)
     public ResponseEntity<?> login(SignInReq signInReq) {
         KakaoUserInfo kakaoUserInfo = getUserInfo(signInReq);
