@@ -2,6 +2,7 @@ package gible.domain.user.service;
 
 import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.dto.SignUpReq;
+import gible.domain.user.dto.UserInfoRes;
 import gible.domain.user.entity.User;
 import gible.domain.user.repository.UserRepository;
 import gible.exception.CustomException;
@@ -33,12 +34,11 @@ public class UserService {
         return MyPageRes.of(user.getEmail(), user.getNickname());
     }
 
-//    @Transactional(readOnly = true)
-//    public List<EventSummaryRes> getParticipationEvents(UUID userId) {
-//        return participateRepository.findByUser_Id(userId)
-//                .stream().map(Participate::getEvent).toList()
-//                .stream().map(EventSummaryRes::fromEntity).toList();
-//    }
+    @Transactional
+    public UserInfoRes getUserInfo(UUID userId) {
+        User user = findById(userId);
+        return UserInfoRes.of(user.getName(), user.getPhoneNumber());
+    }
 
     @Transactional
     public void deleteById(UUID userId) {

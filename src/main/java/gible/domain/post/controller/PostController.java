@@ -4,6 +4,7 @@ import gible.domain.post.api.PostApi;
 import gible.domain.post.dto.PostReq;
 import gible.domain.post.service.PostService;
 import gible.domain.security.common.SecurityUserDetails;
+import gible.domain.user.service.UserService;
 import gible.global.common.response.SuccessRes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @RestController
 public class PostController implements PostApi {
 
+    private final UserService userService;
     private final PostService postService;
 
     /* 게시글 업로드 */
@@ -32,6 +34,14 @@ public class PostController implements PostApi {
 
         postService.savePost(postReq, userDetails.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("게시글 업로드 완료."));
+    }
+
+    /* 게시글에 필요한 정보 불러오기 */
+    @Override
+    @GetMapping("/user-info")
+    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal SecurityUserDetails userDetails) {
+
+        return ResponseEntity.ok().body(userService.getUserInfo(userDetails.getId()));
     }
 
     /* 게시글 목록 조회 + 검색 조회 */

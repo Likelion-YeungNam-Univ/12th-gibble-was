@@ -38,6 +38,20 @@ public interface PostApi {
     ResponseEntity<?> savePost(@Valid @RequestBody PostReq postReq,
                                @AuthenticationPrincipal SecurityUserDetails userDetails);
 
+    @Operation(summary = "사용자 정보 불러오기", description = "사용자의 정보를 불러오기 위한 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "사용자 정보 불러오기 성공",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(value = """
+                                        {
+                                            "name": "홍길동",
+                                            "phoneNumber": "010-1234-5678"
+                                        }
+                                    """)
+                    })
+            )
+    })
+    ResponseEntity<?> getUserInfo(@AuthenticationPrincipal SecurityUserDetails userDetails);
 
     @Operation(summary = "게시글 리스트 가져오기", description = "게시글 리스트를 조회하기 위한 API")
     @ApiResponses({
