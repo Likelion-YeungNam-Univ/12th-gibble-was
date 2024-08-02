@@ -24,7 +24,7 @@ public interface EventApi {
 
     @Operation(summary = "이벤트 등록", description = "이벤트 등록하기 위한 API")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "이벤트 등록 성공",
+            @ApiResponse(responseCode = "201", description = "이벤트 등록 성공",
                     content = @Content(mediaType = "application/json", examples = {
                             @ExampleObject(value = """
                                         {
