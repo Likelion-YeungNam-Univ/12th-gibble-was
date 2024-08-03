@@ -48,7 +48,6 @@ public class EventService {
     /* 특정 이벤트 조회 */
     @Transactional(readOnly = true)
     public EventDetailRes getEvent(UUID eventId) {
-
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new CustomException(ErrorType.EVENT_NOT_FOUND));
         return EventDetailRes.fromEntity(event);
