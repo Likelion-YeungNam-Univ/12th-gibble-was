@@ -43,4 +43,8 @@ public class UserController implements UserApi {
         return ResponseEntity.ok().body(postService.getPostByUserId(userDetails.getId()));
     }
 
+    @PostMapping("/dupCheck")
+    public ResponseEntity<?> dupCheck(@RequestParam(value = "nickname") String nickname){
+        return ResponseEntity.ok().body(userService.dupCheck(nickname));
+    }
 }

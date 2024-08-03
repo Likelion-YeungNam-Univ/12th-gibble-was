@@ -1,5 +1,6 @@
 package gible.domain.user.service;
 
+import gible.domain.user.dto.DupcheckRes;
 import gible.domain.user.dto.MyPageRes;
 import gible.domain.user.dto.SignUpReq;
 import gible.domain.user.dto.UserInfoRes;
@@ -50,5 +51,10 @@ public class UserService {
         if(userRepository.existsByEmail(signUpReq.email()))
             throw new CustomException(ErrorType.ALREADY_EXISTS_USER);
         userRepository.save(SignUpReq.toEntity(signUpReq));
+    }
+
+    @Transactional(readOnly = true)
+    public DupcheckRes dupCheck(String nickname) {
+        return DupcheckRes.from(userRepository.existsByNickname(nickname));
     }
 }
