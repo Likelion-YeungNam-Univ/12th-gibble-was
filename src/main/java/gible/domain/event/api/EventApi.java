@@ -50,11 +50,13 @@ public interface EventApi {
                                                 {
                                                     "eventId": "84a4e24c-d722-4479-ba8d-a3547f103fad",
                                                     "title": "이벤트1",
+                                                    "duration": "2024. 07. 13 ~ 2024. 07. 30",
                                                     "imageUrl": "http://image-url.co.kr"
                                                 },
                                                 {
                                                     "eventId": "e91c03e2-2821-4e60-9c7e-b054cccfc3a3",
                                                     "title": "이벤트2",
+                                                    "duration": "2024. 07. 13 ~ 2024. 07. 30",
                                                     "imageUrl": "http://image-url.co.kr"
                                                 }
                                             ],
@@ -96,6 +98,7 @@ public interface EventApi {
                                             "eventId": "e91c03e2-2821-4e60-9c7e-b054cccfc3a3",
                                             "title": "이벤트1",
                                             "content": "이벤트 참여해주세요~",
+                                            "duration": "2024. 07. 13 ~ 2024. 07. 30",
                                             "imageUrl": "http://image-url.co.kr"
                                         }
                                     """)

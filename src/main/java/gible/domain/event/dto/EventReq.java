@@ -8,6 +8,7 @@ public record EventReq(
         String title,
         @NotBlank(message = "내용은 필수 작성 항목입니다.")
         String content,
+        String duration,
         String imageUrl
 ) {
     public static Event toEntity(EventReq eventReq) {
