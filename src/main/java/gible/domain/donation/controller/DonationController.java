@@ -27,7 +27,7 @@ public class DonationController implements DonationApi {
                                     @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         donationService.donate(donationReq, userDetails.getId(), postId);
-        return ResponseEntity.ok(SuccessRes.from("기부 성공."));
+        return ResponseEntity.ok(SuccessRes.from("기부 성공"));
     }
 
     /* 게시글에 대한 기부자 목록 불러오기 */
