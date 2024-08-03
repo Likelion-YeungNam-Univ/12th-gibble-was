@@ -59,9 +59,11 @@ public class PostController implements PostApi {
     /* 특정 게시글 조회 */
     @Override
     @GetMapping("/{postId}")
-    public ResponseEntity<?> getPost(@PathVariable UUID postId) {
-
-        return ResponseEntity.ok().body(postService.getPost(postId));
+    public ResponseEntity<?> getPost(
+            @AuthenticationPrincipal SecurityUserDetails userDetails,
+            @PathVariable UUID postId
+    ) {
+        return ResponseEntity.ok().body(postService.getPost(postId, userDetails.getId()));
     }
 
     /* 게시글 수정 */

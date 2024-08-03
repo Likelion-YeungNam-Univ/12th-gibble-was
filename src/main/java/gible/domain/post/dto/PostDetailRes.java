@@ -3,6 +3,7 @@ package gible.domain.post.dto;
 import gible.domain.post.entity.Post;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 public record PostDetailRes(
@@ -10,21 +11,27 @@ public record PostDetailRes(
         String title,
         String content,
         String address,
-        String name,
         int wantedCard,
         int donatedCard,
-        String phoneNumber,
         String writer,
         UUID writerId,
         String email,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        Map<String, Integer> donationInfo
 ) {
-    public static PostDetailRes fromEntity(Post post) {
+    public static PostDetailRes fromEntitywithNickname(Post post, Map<String, Integer> donationInfo) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
-                post.getWriter().getName(), post.getWantedCard(), post.getDonatedCard(),
-                post.getWriter().getPhoneNumber(), post.getWriter().getNickname(),
-                post.getWriter().getId(), post.getWriter().getEmail(), post.getCreatedAt()
-                );
+                post.getWantedCard(), post.getDonatedCard(), post.getWriter().getName(),
+                post.getWriter().getId(), post.getWriter().getEmail(), post.getCreatedAt(),
+                donationInfo);
+    }
+
+    public static PostDetailRes fromEntitywithName(Post post, Map<String, Integer> donationInfo) {
+        return new PostDetailRes(
+                post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
+                post.getWantedCard(), post.getDonatedCard(), post.getWriter().getName(),
+                post.getWriter().getId(), post.getWriter().getEmail(), post.getCreatedAt(),
+                donationInfo);
     }
 }

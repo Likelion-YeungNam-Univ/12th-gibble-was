@@ -1,5 +1,7 @@
 package gible.domain.post.service;
 
+import gible.domain.donation.entity.Donation;
+import gible.domain.donation.repository.DonationRepository;
 import gible.domain.mail.service.MailService;
 import gible.domain.post.dto.PostDetailRes;
 import gible.domain.post.dto.PostReq;
@@ -18,7 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,7 +33,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final MailService mailService;
-
+    private final DonationRepository donationRepository;
     /* 게시글 생성 */
     @Transactional
     public void savePost(PostReq postReq, UUID userId) {
@@ -56,11 +60,22 @@ public class PostService {
 
     /* 특정 게시글 불러오기 */
     @Transactional(readOnly = true)
-    public PostDetailRes getPost(UUID postId) {
+    public PostDetailRes getPost(UUID postId, UUID userId) {
 
         Post foundPost = postRepository.findById(postId).orElseThrow(() ->
                 new CustomException(ErrorType.POST_NOT_FOUND));
-        return PostDetailRes.fromEntity(foundPost);
+        List<Donation> donations = donationRepository.findByPost_Id(postId);
+        Map<String, Integer> donatorInfos = new HashMap<>();
+        if(foundPost.getWriter().getId().equals(userId)) {
+            donations.forEach(donation -> {
+                donatorInfos.put(donation.getSender().getName(), donation.getDonateCount());
+            });
+            return PostDetailRes.fromEntitywithName(foundPost, donatorInfos);
+        }
+        donations.forEach(donation -> {
+            donatorInfos.put(donation.getSender().getNickname(), donation.getDonateCount());
+        });
+        return PostDetailRes.fromEntitywithNickname(foundPost, donatorInfos);
     }
 
     /* 검색한 단어에 대한 게시글 불러오기 */

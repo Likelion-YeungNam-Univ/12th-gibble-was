@@ -85,7 +85,6 @@ public class SecuredPostServiceTest {
                 .title("제목")
                 .content("내용")
                 .address("주소")
-                .name("작성자")
                 .wantedCard(20)
                 .writer(user)
                 .build();

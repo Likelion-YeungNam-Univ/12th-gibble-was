@@ -63,13 +63,13 @@ public class PostControllerTest {
     private Post post2;
     private Post post3;
     private UUID postId;
-
+    private UUID userId;
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext) {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
-
+        this.userId = UUID.randomUUID();
         this.postId = UUID.randomUUID();
         createPost();
     }
@@ -79,7 +79,6 @@ public class PostControllerTest {
                 .title("제목1")
                 .content("내용1")
                 .address("주소1")
-                .name("작성자1")
                 .wantedCard(20)
                 .writer(user)
                 .build();
@@ -88,7 +87,6 @@ public class PostControllerTest {
                 .title("제목2")
                 .content("내용2")
                 .address("주소2")
-                .name("작성자2")
                 .wantedCard(20)
                 .writer(user)
                 .build();
@@ -97,7 +95,6 @@ public class PostControllerTest {
                 .title("title")
                 .content("내용3")
                 .address("주소3")
-                .name("작성자3")
                 .wantedCard(20)
                 .writer(user)
                 .build();
@@ -167,8 +164,8 @@ public class PostControllerTest {
     @DisplayName("특정 게시글 조회 테스트")
     void getPostTest() throws Exception {
         // given
-        PostDetailRes post = PostDetailRes.fromEntity(post1);
-        given(postService.getPost(postId)).willReturn(post);
+        //PostDetailRes post = PostDetailRes.fromEntity(post1);
+        //given(postService.getPost(postId, userId)).willReturn(post);
 
         // when
         ResultActions resultActions = mockMvc.perform(

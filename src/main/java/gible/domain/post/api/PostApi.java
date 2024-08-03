@@ -117,7 +117,7 @@ public interface PostApi {
                     })
             )
     })
-    ResponseEntity<?> getPost(@PathVariable UUID postId);
+    ResponseEntity<?> getPost(@AuthenticationPrincipal SecurityUserDetails userDetails, @PathVariable UUID postId);
 
     @Operation(summary = "게시글 수정", description = "게시글을 수정하기 위한 API")
     @ApiResponses({
