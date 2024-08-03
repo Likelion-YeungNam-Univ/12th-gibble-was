@@ -3,10 +3,7 @@ package gible.domain.post.service;
 import gible.domain.donation.entity.Donation;
 import gible.domain.donation.repository.DonationRepository;
 import gible.domain.mail.service.MailService;
-import gible.domain.post.dto.PostDetailRes;
-import gible.domain.post.dto.PostReq;
-import gible.domain.post.dto.PostSummaryRes;
-import gible.domain.post.dto.PostTitleRes;
+import gible.domain.post.dto.*;
 import gible.domain.post.entity.Post;
 import gible.domain.post.repository.PostRepository;
 import gible.domain.user.entity.User;
@@ -36,7 +33,7 @@ public class PostService {
     private final DonationRepository donationRepository;
     /* 게시글 생성 */
     @Transactional
-    public void savePost(PostReq postReq, UUID userId) {
+    public PostUploadRes savePost(PostReq postReq, UUID userId) {
 
         User foundUser = userRepository.findById(userId).orElseThrow(() ->
                 new CustomException(ErrorType.USER_NOT_FOUND));
@@ -48,6 +45,7 @@ public class PostService {
         // 등록된 게시글 메일 보내기
         List<User> emailAgreeUsers = userRepository.findByEmailAgree(true);
         mailService.sendMail(emailAgreeUsers.stream().map(User::getEmail).toList(), savedPost);
+        return PostUploadRes.from(savedPost.getId());
     }
 
     /* 전체 게시글 불러오기 */
@@ -67,14 +65,10 @@ public class PostService {
         List<Donation> donations = donationRepository.findByPost_Id(postId);
         Map<String, Integer> donatorInfos = new HashMap<>();
         if(foundPost.getWriter().getId().equals(userId)) {
-            donations.forEach(donation -> {
-                donatorInfos.put(donation.getSender().getName(), donation.getDonateCount());
-            });
+            donations.forEach(donation -> donatorInfos.put(donation.getSender().getName(), donation.getDonateCount()));
             return PostDetailRes.fromEntitywithName(foundPost, donatorInfos);
         }
-        donations.forEach(donation -> {
-            donatorInfos.put(donation.getSender().getNickname(), donation.getDonateCount());
-        });
+        donations.forEach(donation -> donatorInfos.put(donation.getSender().getNickname(), donation.getDonateCount()));
         return PostDetailRes.fromEntitywithNickname(foundPost, donatorInfos);
     }
 

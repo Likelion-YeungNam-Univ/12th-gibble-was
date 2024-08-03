@@ -32,8 +32,7 @@ public class PostController implements PostApi {
     public ResponseEntity<?> savePost(@Valid @RequestBody PostReq postReq,
                                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
-        postService.savePost(postReq, userDetails.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("게시글 업로드 완료."));
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.savePost(postReq, userDetails.getId()));
     }
 
     /* 게시글에 필요한 정보 불러오기 */
@@ -48,7 +47,7 @@ public class PostController implements PostApi {
     @Override
     @GetMapping
     public ResponseEntity<?> getAllPosts(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(name = "search", required = false) String search) {
         if (search == null)
             return ResponseEntity.ok().body(postService.getAllPosts(pageable));
