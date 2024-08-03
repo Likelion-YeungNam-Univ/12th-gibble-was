@@ -35,7 +35,7 @@ public class AuthController implements AuthApi {
     @Override
     @PostMapping("/token")
     public ResponseEntity<?> reissueToken(@CookieValue("refreshToken") String refreshToken){
-        return ResponseEntity.ok().body(authService.reissueToken(refreshToken));
+        return authService.reissueToken(refreshToken);
     }
 
     @Override
