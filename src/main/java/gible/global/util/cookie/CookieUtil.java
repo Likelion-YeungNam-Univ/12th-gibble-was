@@ -12,7 +12,7 @@ public class CookieUtil {
     public ResponseCookie addRtkCookie(String key, String value) {
         return ResponseCookie.from(key, value)
                 .maxAge(REFRESH_EXPIRATION)
-                .secure(true)
+                .secure(false)
                 .httpOnly(true)
                 .path("/")
                 .sameSite("None")
