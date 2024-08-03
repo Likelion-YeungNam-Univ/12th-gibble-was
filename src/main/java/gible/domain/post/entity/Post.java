@@ -31,6 +31,7 @@ public class Post {
     private String title;
 
     @NotNull
+    @Column(length = 500)
     private String content;
 
     @NotNull
