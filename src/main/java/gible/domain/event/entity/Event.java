@@ -32,6 +32,8 @@ public class Event {
     @NotNull
     private String content;
 
+    private String duration;
+
     @Enumerated(EnumType.STRING)
     private Region region;
 

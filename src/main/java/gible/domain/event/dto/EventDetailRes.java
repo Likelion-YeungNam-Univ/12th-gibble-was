@@ -8,9 +8,10 @@ public record EventDetailRes(
         UUID eventId,
         String title,
         String content,
+        String duration,
         String imageUrl
 ) {
     public static EventDetailRes fromEntity(Event event) {
-        return new EventDetailRes(event.getId(), event.getTitle(), event.getContent(), event.getImageUrl());
+        return new EventDetailRes(event.getId(), event.getTitle(), event.getContent(), event.getDuration(), event.getImageUrl());
     }
 }
