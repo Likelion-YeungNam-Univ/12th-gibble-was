@@ -33,6 +33,7 @@ public enum ErrorType {
     ALREADY_PARTICIPATE_POST(409, "이미 해당 이벤트에 참여하였습니다."),
     ALREADY_EXISTS_USER(409, "이미 존재하는 유저입니다."),
     INVALID_DONATE_COUNT(400, "해당 개수만큼 기부 불가능"),
+    INVALID_SELF_DONATE(400, "자신에게 기부 불가능"),
 
     // 서버 에러
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다. 서버 팀에 연락주세요.");

@@ -37,7 +37,11 @@ public class DonationService {
         Post foundPost = postRepository.findById(postId).orElseThrow(() ->
                 new CustomException(ErrorType.POST_NOT_FOUND));
 
+        if(foundPost.getWriter().equals(foundUser)){
+            throw new CustomException(ErrorType.INVALID_SELF_DONATE);
+        }
         Donation donation = DonationReq.toEntity(donationReq, foundUser, foundPost);
+
         if(foundPost.getWantedCard() - foundPost.getDonatedCard()< donationReq.donateCount()){
             throw new CustomException(ErrorType.INVALID_DONATE_COUNT);
         }
