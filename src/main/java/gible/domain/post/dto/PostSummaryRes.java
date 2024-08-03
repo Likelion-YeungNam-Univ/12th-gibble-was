@@ -11,11 +11,12 @@ public record PostSummaryRes(
         int wantedCard,
         int donatedCard,
         LocalDateTime createdAt,
-        String writer
+        String writer,
+        boolean isNew
 ) {
-    public static PostSummaryRes fromEntity(Post post) {
+    public static PostSummaryRes fromEntity(Post post, boolean isNew) {
         return new PostSummaryRes(
                 post.getId(), post.getTitle(), post.getWantedCard(),
-                post.getDonatedCard(), post.getCreatedAt(), post.getWriter().getNickname());
+                post.getDonatedCard(), post.getCreatedAt(), post.getWriter().getNickname(), isNew);
     }
 }

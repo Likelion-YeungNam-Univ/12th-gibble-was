@@ -14,6 +14,7 @@ import gible.domain.user.repository.UserRepository;
 import gible.exception.CustomException;
 import gible.exception.error.ErrorType;
 import gible.global.aop.annotation.AuthenticatedUser;
+import gible.global.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static gible.global.util.redis.RedisProperties.NEWEST_EXPIRATION;
+import static gible.global.util.redis.RedisProperties.POST_KEY_PREFIX;
+
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -34,6 +38,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final MailService mailService;
     private final DonationRepository donationRepository;
+    private final RedisUtil redisUtil;
+
     /* 게시글 생성 */
     @Transactional
     public void savePost(PostReq postReq, UUID userId) {
@@ -45,6 +51,9 @@ public class PostService {
         post.addWriter(foundUser);
         Post savedPost = postRepository.save(post);
 
+        redisUtil.save(POST_KEY_PREFIX + savedPost.getId(), savedPost.getId());
+        redisUtil.saveExpire(POST_KEY_PREFIX + savedPost.getId(), NEWEST_EXPIRATION);
+
         // 등록된 게시글 메일 보내기
         List<User> emailAgreeUsers = userRepository.findByEmailAgree(true);
         mailService.sendMail(emailAgreeUsers.stream().map(User::getEmail).toList(), savedPost);
@@ -55,7 +64,8 @@ public class PostService {
     public Page<PostSummaryRes> getAllPosts(Pageable pageable) {
 
         Page<Post> posts = postRepository.findAll(pageable);
-        return posts.map(PostSummaryRes::fromEntity);
+        return posts.map(post ->
+                PostSummaryRes.fromEntity(post, redisUtil.get(POST_KEY_PREFIX + post.getId())));
     }
 
     /* 특정 게시글 불러오기 */
@@ -83,7 +93,8 @@ public class PostService {
     public Page<PostSummaryRes> getPostsByKeyword(String search, Pageable pageable) {
 
         Page<Post> searchPosts = postRepository.findByTitleContaining(search, pageable);
-        return searchPosts.map(PostSummaryRes::fromEntity);
+        return searchPosts.map(post ->
+                PostSummaryRes.fromEntity(post, redisUtil.get(POST_KEY_PREFIX + post.getId())));
     }
 
     /* 작성자의 게시글 불러오기 */
