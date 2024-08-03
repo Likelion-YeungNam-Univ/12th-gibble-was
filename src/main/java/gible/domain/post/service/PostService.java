@@ -72,14 +72,18 @@ public class PostService {
 
         Post foundPost = postRepository.findById(postId).orElseThrow(() ->
                 new CustomException(ErrorType.POST_NOT_FOUND));
+
+        boolean isPermitted = userId == foundPost.getWriter().getId();
+
         List<Donation> donations = donationRepository.findByPost_Id(postId);
         Map<String, Integer> donatorInfos = new HashMap<>();
+
         if(foundPost.getWriter().getId().equals(userId)) {
             donations.forEach(donation -> donatorInfos.put(donation.getSender().getName(), donation.getDonateCount()));
-            return PostDetailRes.fromEntitywithName(foundPost, donatorInfos);
+            return PostDetailRes.fromEntitywithName(foundPost, donatorInfos, isPermitted);
         }
         donations.forEach(donation -> donatorInfos.put(donation.getSender().getNickname(), donation.getDonateCount()));
-        return PostDetailRes.fromEntitywithNickname(foundPost, donatorInfos);
+        return PostDetailRes.fromEntitywithNickname(foundPost, donatorInfos, isPermitted);
     }
 
     /* 검색한 단어에 대한 게시글 불러오기 */

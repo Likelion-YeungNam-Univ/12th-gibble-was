@@ -14,24 +14,22 @@ public record PostDetailRes(
         int wantedCard,
         int donatedCard,
         String writer,
-        UUID writerId,
         String email,
         LocalDateTime createdAt,
+        boolean isPermitted,
         Map<String, Integer> donationInfo
 ) {
-    public static PostDetailRes fromEntitywithNickname(Post post, Map<String, Integer> donationInfo) {
+    public static PostDetailRes fromEntitywithNickname(Post post, Map<String, Integer> donationInfo, boolean isPermitted) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
                 post.getWantedCard(), post.getDonatedCard(), post.getWriter().getName(),
-                post.getWriter().getId(), post.getWriter().getEmail(), post.getCreatedAt(),
-                donationInfo);
+                post.getWriter().getEmail(), post.getCreatedAt(), isPermitted, donationInfo);
     }
 
-    public static PostDetailRes fromEntitywithName(Post post, Map<String, Integer> donationInfo) {
+    public static PostDetailRes fromEntitywithName(Post post, Map<String, Integer> donationInfo, boolean isPermitted) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
                 post.getWantedCard(), post.getDonatedCard(), post.getWriter().getName(),
-                post.getWriter().getId(), post.getWriter().getEmail(), post.getCreatedAt(),
-                donationInfo);
+                post.getWriter().getEmail(), post.getCreatedAt(), isPermitted, donationInfo);
     }
 }

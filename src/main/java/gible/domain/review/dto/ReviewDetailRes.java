@@ -13,11 +13,13 @@ public record ReviewDetailRes(
         String imageUrl,
         UUID writerId,
         String email,
+        boolean isPermitted,
         LocalDateTime createdAt
 ) {
-    public static ReviewDetailRes fromEntity(Review review) {
+    public static ReviewDetailRes fromEntity(Review review, boolean isPermitted) {
         return new ReviewDetailRes(
                 review.getTitle(), review.getContent(), review.getWriter().getNickname(),
-                review.getImageUrl(), review.getWriter().getId(), review.getWriter().getEmail(), review.getCreatedAt());
+                review.getImageUrl(), review.getWriter().getId(), review.getWriter().getEmail(),
+                isPermitted, review.getCreatedAt());
     }
 }

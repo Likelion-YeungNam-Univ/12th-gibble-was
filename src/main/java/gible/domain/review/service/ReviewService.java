@@ -31,9 +31,13 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewDetailRes getReview(UUID reviewId) {
-        return reviewRepository.findById(reviewId).map(ReviewDetailRes::fromEntity)
-                .orElseThrow(()-> new CustomException(ErrorType.EVENT_NOT_FOUND));
+    public ReviewDetailRes getReview(UUID userId, UUID reviewId) {
+
+        Review foundReview = reviewRepository.findById(reviewId).orElseThrow(() ->
+                new CustomException(ErrorType.EVENT_NOT_FOUND));
+
+        boolean isPermitted = userId == foundReview.getWriter().getId();
+        return ReviewDetailRes.fromEntity(foundReview, isPermitted);
     }
 
     @Transactional

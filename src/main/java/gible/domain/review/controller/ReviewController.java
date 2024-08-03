@@ -35,8 +35,9 @@ public class ReviewController implements ReviewApi {
     /* 리뷰 가져오기 */
     @Override
     @GetMapping("/{reviewId}")
-    public ResponseEntity<?> getReview(@PathVariable UUID reviewId) {
-        return ResponseEntity.ok(reviewService.getReview(reviewId));
+    public ResponseEntity<?> getReview(@AuthenticationPrincipal SecurityUserDetails userDetails,
+                                       @PathVariable UUID reviewId) {
+        return ResponseEntity.ok(reviewService.getReview(userDetails.getId(), reviewId));
     }
 
     /* 리뷰 업로드 */

@@ -92,7 +92,8 @@ public interface ReviewApi {
                     })
             )
     })
-    ResponseEntity<?> getReview(@PathVariable UUID reviewId);
+    ResponseEntity<?> getReview(@AuthenticationPrincipal SecurityUserDetails userDetails,
+                                @PathVariable UUID reviewId);
 
     @Operation(summary = "리뷰 업로드", description = "리뷰 업로드하기 위한 API")
     @ApiResponses({

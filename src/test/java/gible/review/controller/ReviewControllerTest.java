@@ -118,9 +118,9 @@ public class ReviewControllerTest {
     @Test
     @DisplayName("리뷰 불러오기 테스트")
     void getReviewById() throws Exception {
-        ReviewDetailRes review = ReviewDetailRes.fromEntity(review1);
+        ReviewDetailRes review = ReviewDetailRes.fromEntity(review1, true);
 
-        given(reviewService.getReview(reviewId)).willReturn(review);
+        given(reviewService.getReview(reviewId, userId)).willReturn(review);
 
         ResultActions resultActions = mockMvc.perform(
                 get("/review/" + reviewId)

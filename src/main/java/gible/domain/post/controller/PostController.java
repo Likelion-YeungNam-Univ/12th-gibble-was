@@ -62,6 +62,7 @@ public class PostController implements PostApi {
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @PathVariable UUID postId
     ) {
+
         return ResponseEntity.ok().body(postService.getPost(postId, userDetails.getId()));
     }
 
