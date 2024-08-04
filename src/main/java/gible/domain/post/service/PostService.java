@@ -73,7 +73,7 @@ public class PostService {
         Post foundPost = postRepository.findById(postId).orElseThrow(() ->
                 new CustomException(ErrorType.POST_NOT_FOUND));
 
-        boolean isPermitted = userId == foundPost.getWriter().getId();
+        boolean isPermitted = userId.equals(foundPost.getWriter().getId());
 
         List<Donation> donations = donationRepository.findByPost_Id(postId);
         Map<String, Integer> donatorInfos = new HashMap<>();

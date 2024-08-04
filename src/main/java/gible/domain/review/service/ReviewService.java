@@ -36,7 +36,7 @@ public class ReviewService {
         Review foundReview = reviewRepository.findById(reviewId).orElseThrow(() ->
                 new CustomException(ErrorType.EVENT_NOT_FOUND));
 
-        boolean isPermitted = userId == foundReview.getWriter().getId();
+        boolean isPermitted = userId.equals(foundReview.getWriter().getId());
         return ReviewDetailRes.fromEntity(foundReview, isPermitted);
     }
 
