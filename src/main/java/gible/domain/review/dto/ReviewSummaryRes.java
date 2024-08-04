@@ -8,9 +8,11 @@ public record ReviewSummaryRes(
         UUID id,
         String title,
         String content,
+        String imageUrl,
         String nickname
 ) {
     public static ReviewSummaryRes fromEntity(Review review) {
-        return new ReviewSummaryRes(review.getId(), review.getTitle(), review.getContent(), review.getWriter().getNickname());
+        return new ReviewSummaryRes(review.getId(), review.getTitle(),
+                review.getContent(), review.getImageUrl(), review.getWriter().getNickname());
     }
 }
