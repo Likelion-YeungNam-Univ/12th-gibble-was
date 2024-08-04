@@ -20,6 +20,6 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     UUID findWriterIdByPostId(@Param("postId") UUID postId);
 
     @Modifying
-    @Query("UPDATE Post p SET p.isDonationPermitted = :isDonationPermitted WHERE p.id = :id")
-    void updateDonationPermittedById(UUID postId, boolean isDonationPermitted);
+    @Query("UPDATE Post p SET p.isDonationPermitted = :isDonationPermitted WHERE p.id = :postId")
+    void updateDonationPermittedById(@Param("postId") UUID postId, @Param("isDonationPermitted") boolean isDonationPermitted);
 }

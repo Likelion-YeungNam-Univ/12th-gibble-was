@@ -85,9 +85,4 @@ public class Post {
     public void updateDonatedCard(int donatedCard) {
         this.donatedCard += donatedCard;
     }
-
-    /* 게시글 기부 마감 업데이트 */
-    public void updateDonationPermitted(boolean isDonationPermitted) {
-        this.isDonationPermitted = isDonationPermitted;
-    }
 }
