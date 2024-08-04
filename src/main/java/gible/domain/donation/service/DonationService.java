@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -56,7 +55,7 @@ public class DonationService {
 
         List<Donation> donations = donationRepository.findByPost_Id(postId);
 
-        return donations.stream().map(DonationSenderInfoRes::fromEntity).collect(Collectors.toList());
+        return donations.stream().map(DonationSenderInfoRes::fromEntity).toList();
     }
 
     /* 기부한 게시글에 대한 정보 불러오기 */
@@ -65,7 +64,7 @@ public class DonationService {
 
         List<Donation> donations = donationRepository.findBySender_Id(userId);
 
-        return donations.stream().map(DonationPostInfoRes::fromEntity).collect(Collectors.toList());
+        return donations.stream().map(DonationPostInfoRes::fromEntity).toList();
     }
 
     /* 기부해준 사람들의 목록 불러오기 */
@@ -74,6 +73,6 @@ public class DonationService {
 
         List<Donation> donations = donationRepository.findByReceiver_Id(userId);
 
-        return donations.stream().map(DonationSenderInfoRes::fromEntity).collect(Collectors.toList());
+        return donations.stream().map(DonationSenderInfoRes::fromEntity).toList();
     }
 }
