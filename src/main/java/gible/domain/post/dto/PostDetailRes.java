@@ -18,12 +18,13 @@ public record PostDetailRes(
         String email,
         LocalDateTime createdAt,
         boolean isPermitted,
-        List<DonationSenderInfoRes> donationInfo
+        List<DonationSenderInfoRes> donationInfo,
+        boolean isDonationPermitted
 ) {
     public static PostDetailRes fromEntity(Post post, List<DonationSenderInfoRes> donationInfo, boolean isPermitted) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
                 post.getWantedCard(), post.getDonatedCard(), post.getWriter().getName(),
-                post.getWriter().getEmail(), post.getCreatedAt(), isPermitted, donationInfo);
+                post.getWriter().getEmail(), post.getCreatedAt(), isPermitted, donationInfo, post.isDonationPermitted());
     }
 }
