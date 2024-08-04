@@ -8,9 +8,10 @@ import java.util.UUID;
 public record PostTitleRes(
         UUID postId,
         String title,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        String content
 ) {
     public static PostTitleRes fromEntity(Post post) {
-        return new PostTitleRes(post.getId(), post.getTitle(), post.getCreatedAt());
+        return new PostTitleRes(post.getId(), post.getTitle(), post.getCreatedAt(), post.getContent());
     }
 }
