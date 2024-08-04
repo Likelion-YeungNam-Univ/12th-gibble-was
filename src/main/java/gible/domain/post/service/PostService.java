@@ -1,5 +1,6 @@
 package gible.domain.post.service;
 
+import gible.domain.donation.dto.DonationSenderInfoRes;
 import gible.domain.donation.entity.Donation;
 import gible.domain.donation.repository.DonationRepository;
 import gible.domain.mail.service.MailService;
@@ -18,9 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -76,14 +75,23 @@ public class PostService {
         boolean isPermitted = userId.equals(foundPost.getWriter().getId());
 
         List<Donation> donations = donationRepository.findByPost_Id(postId);
-        Map<String, Integer> donatorInfos = new HashMap<>();
 
-        if(foundPost.getWriter().getId().equals(userId)) {
-            donations.forEach(donation -> donatorInfos.put(donation.getSender().getName(), donation.getDonateCount()));
-            return PostDetailRes.fromEntitywithName(foundPost, donatorInfos, isPermitted);
-        }
-        donations.forEach(donation -> donatorInfos.put(donation.getSender().getNickname(), donation.getDonateCount()));
-        return PostDetailRes.fromEntitywithNickname(foundPost, donatorInfos, isPermitted);
+        List<DonationSenderInfoRes> donationInfoList = getDonationInfoList(donations, isPermitted);
+
+        return PostDetailRes.fromEntity(foundPost, donationInfoList, isPermitted);
+    }
+
+    /* 기부자 정보 불러오기 */
+    private List<DonationSenderInfoRes> getDonationInfoList(List<Donation> donations, boolean isPermitted) {
+        return donations.stream()
+                .collect(Collectors.toMap(
+                        donation -> isPermitted ? donation.getSender().getName() : donation.getSender().getNickname(),
+                        Donation::getDonateCount,
+                        Integer::sum
+                ))
+                .entrySet().stream()
+                .map(entry -> DonationSenderInfoRes.of(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     /* 검색한 단어에 대한 게시글 불러오기 */
