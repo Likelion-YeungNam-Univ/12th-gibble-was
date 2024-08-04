@@ -3,6 +3,7 @@ package gible.domain.review.service;
 import gible.domain.review.dto.ReviewDetailRes;
 import gible.domain.review.dto.ReviewReq;
 import gible.domain.review.dto.ReviewSummaryRes;
+import gible.domain.review.dto.ReviewUploadRes;
 import gible.domain.review.entity.Review;
 import gible.domain.review.repository.ReviewRepository;
 import gible.domain.user.entity.User;
@@ -41,9 +42,11 @@ public class ReviewService {
     }
 
     @Transactional
-    public void uploadReview(UUID userId, ReviewReq reviewReq) {
+    public ReviewUploadRes uploadReview(UUID userId, ReviewReq reviewReq) {
         User user = userService.findById(userId);
-        reviewRepository.save(ReviewReq.toEntity(reviewReq, user));
+        Review savedReview = reviewRepository.save(ReviewReq.toEntity(reviewReq, user));
+
+        return ReviewUploadRes.from(savedReview.getId());
     }
 
     @Transactional

@@ -47,8 +47,8 @@ public class ReviewController implements ReviewApi {
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewReq reviewReq
             ) {
-        reviewService.uploadReview(userDetails.getId(), reviewReq);
-        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessRes.from("리뷰 업로드 성공"));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.uploadReview(userDetails.getId(), reviewReq));
     }
 
     @Override
