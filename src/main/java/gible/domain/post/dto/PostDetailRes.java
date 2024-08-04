@@ -1,6 +1,6 @@
 package gible.domain.post.dto;
 
-import gible.domain.donation.dto.DonationSenderInfoRes;
+import gible.domain.donation.dto.DonationSenderRes;
 import gible.domain.post.entity.Post;
 
 import java.time.LocalDateTime;
@@ -18,10 +18,10 @@ public record PostDetailRes(
         String email,
         LocalDateTime createdAt,
         boolean isPermitted,
-        List<DonationSenderInfoRes> donationInfo,
+        List<DonationSenderRes> donationInfo,
         boolean isDonationPermitted
 ) {
-    public static PostDetailRes fromEntity(Post post, List<DonationSenderInfoRes> donationInfo, boolean isPermitted) {
+    public static PostDetailRes fromEntity(Post post, List<DonationSenderRes> donationInfo, boolean isPermitted) {
         return new PostDetailRes(
                 post.getId(), post.getTitle(), post.getContent(), post.getAddress(),
                 post.getWantedCard(), post.getDonatedCard(), post.getWriter().getName(),

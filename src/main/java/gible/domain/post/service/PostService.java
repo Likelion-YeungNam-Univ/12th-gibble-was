@@ -1,6 +1,6 @@
 package gible.domain.post.service;
 
-import gible.domain.donation.dto.DonationSenderInfoRes;
+import gible.domain.donation.dto.DonationSenderRes;
 import gible.domain.donation.entity.Donation;
 import gible.domain.donation.repository.DonationRepository;
 import gible.domain.mail.service.MailService;
@@ -75,23 +75,23 @@ public class PostService {
 
         List<Donation> donations = donationRepository.findByPost_Id(postId);
 
-        List<DonationSenderInfoRes> donationInfoList = getDonationInfoList(donations, isPermitted);
+        List<DonationSenderRes> donationInfoList = getDonationInfoList(donations, isPermitted);
 
         return PostDetailRes.fromEntity(foundPost, donationInfoList, isPermitted);
     }
 
     /* 기부자 정보 불러오기 */
-    private List<DonationSenderInfoRes> getDonationInfoList(List<Donation> donations, boolean isPermitted) {
-        Map<UUID, DonationSenderInfoRes> donatorInfos = new HashMap<>();
+    private List<DonationSenderRes> getDonationInfoList(List<Donation> donations, boolean isPermitted) {
+        Map<UUID, DonationSenderRes> donatorInfos = new HashMap<>();
 
         for (Donation donation : donations) {
             UUID userId = donation.getSender().getId();
             String identifier = isPermitted ? donation.getSender().getName() : donation.getSender().getNickname();
             donatorInfos.merge(userId,
-                    DonationSenderInfoRes.of(userId, identifier, donation.getDonateCount()),
-                    (existing, newEntry) -> DonationSenderInfoRes.of(
+                    DonationSenderRes.of(userId, identifier, donation.getDonateCount()),
+                    (existing, newEntry) -> DonationSenderRes.of(
                             existing.userId(),
-                            existing.nickname(),
+                            existing.name(),
                             existing.donateCount() + newEntry.donateCount()
                     ));
         }

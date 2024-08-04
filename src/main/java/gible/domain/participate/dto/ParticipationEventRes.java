@@ -10,6 +10,6 @@ public record ParticipationEventRes(
 ) {
     public static ParticipationEventRes fromEntity(Participate participate) {
         Event event = participate.getEvent();
-        return new ParticipationEventRes(new EventInfoRes(event.getId(), event.getTitle()));
+        return new ParticipationEventRes(new EventInfoRes(event.getId(), event.getTitle(), event.getImageUrl()));
     }
 }
