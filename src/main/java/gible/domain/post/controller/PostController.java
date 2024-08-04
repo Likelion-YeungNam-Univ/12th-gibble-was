@@ -84,6 +84,15 @@ public class PostController implements PostApi {
         postService.deletePost(postId);
         return ResponseEntity.ok(SuccessRes.from("게시글 삭제 완료."));
     }
+
+    /* 게시글 기부 마감 설정 */
+    @PutMapping("/{postId}/donation-permitted")
+    public ResponseEntity<?> postDonationPermitted(@PathVariable UUID postId,
+                                                   @RequestParam(name = "permitted") boolean permitted) {
+
+        postService.updateDonationPermitted(postId, permitted);
+        return ResponseEntity.ok(SuccessRes.from("기부 마감 설정 업데이트 완료."));
+    }
 }
 
 

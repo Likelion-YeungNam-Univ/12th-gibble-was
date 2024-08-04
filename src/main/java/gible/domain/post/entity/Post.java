@@ -48,6 +48,9 @@ public class Post {
     @Column(name = "donated_card")
     private int donatedCard;
 
+    @Column(name = "is_donation_permitted")
+    private boolean isDonationPermitted;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private User writer;
@@ -81,5 +84,10 @@ public class Post {
     /* 게시글에 기부한 개수 업데이트 */
     public void updateDonatedCard(int donatedCard) {
         this.donatedCard += donatedCard;
+    }
+
+    /* 게시글 기부 마감 업데이트 */
+    public void updateDonationPermitted(boolean isDonationPermitted) {
+        this.isDonationPermitted = isDonationPermitted;
     }
 }

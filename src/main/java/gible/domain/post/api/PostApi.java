@@ -147,4 +147,8 @@ public interface PostApi {
             )
     })
     ResponseEntity<?> deletePost(@PathVariable UUID postId);
+
+    @Operation(summary = "기부 마감 업데이트", description = "기부 마감 업데이트를 하기 위한 API")
+    ResponseEntity<?> postDonationPermitted(@PathVariable UUID postId,
+                                            @RequestParam(name = "permitted") boolean permitted);
 }

@@ -121,4 +121,10 @@ public class PostService {
 
         postRepository.deleteById(postId);
     }
+
+    @Transactional
+    public void updateDonationPermitted(UUID postId, boolean isDonationPermitted) {
+
+        postRepository.updateDonationPermittedById(postId, isDonationPermitted);
+    }
 }
