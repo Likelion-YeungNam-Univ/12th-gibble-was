@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -47,6 +46,6 @@ public class ParticipateService {
 
         return participateRepository.findByUser_Id(userId)
                 .stream().map(ParticipationEventRes::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

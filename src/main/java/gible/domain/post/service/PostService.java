@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static gible.global.util.redis.RedisProperties.NEWEST_EXPIRATION;
 import static gible.global.util.redis.RedisProperties.POST_KEY_PREFIX;
@@ -114,7 +113,7 @@ public class PostService {
     public List<PostTitleRes> getPostByUserId(UUID userId) {
 
         List<Post> posts = postRepository.findByWriter_Id(userId);
-        return posts.stream().map(PostTitleRes::fromEntity).collect(Collectors.toList());
+        return posts.stream().map(PostTitleRes::fromEntity).toList();
     }
 
     /* 게시글 수정 */
