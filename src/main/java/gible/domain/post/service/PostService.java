@@ -19,8 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static gible.global.util.redis.RedisProperties.NEWEST_EXPIRATION;
@@ -83,16 +82,23 @@ public class PostService {
 
     /* 기부자 정보 불러오기 */
     private List<DonationSenderInfoRes> getDonationInfoList(List<Donation> donations, boolean isPermitted) {
-        return donations.stream()
-                .collect(Collectors.toMap(
-                        donation -> isPermitted ? donation.getSender().getName() : donation.getSender().getNickname(),
-                        Donation::getDonateCount,
-                        Integer::sum
-                ))
-                .entrySet().stream()
-                .map(entry -> DonationSenderInfoRes.of(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+        Map<UUID, DonationSenderInfoRes> donatorInfos = new HashMap<>();
+
+        for (Donation donation : donations) {
+            UUID userId = donation.getSender().getId();
+            String identifier = isPermitted ? donation.getSender().getName() : donation.getSender().getNickname();
+            donatorInfos.merge(userId,
+                    DonationSenderInfoRes.of(userId, identifier, donation.getDonateCount()),
+                    (existing, newEntry) -> DonationSenderInfoRes.of(
+                            existing.userId(),
+                            existing.nickname(),
+                            existing.donateCount() + newEntry.donateCount()
+                    ));
+        }
+
+        return new ArrayList<>(donatorInfos.values());
     }
+
 
     /* 검색한 단어에 대한 게시글 불러오기 */
     @Transactional(readOnly = true)
