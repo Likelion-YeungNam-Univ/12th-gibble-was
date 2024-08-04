@@ -52,7 +52,7 @@ public class Post {
     @JoinColumn(name = "writer_id")
     private User writer;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Donation> donations = new ArrayList<>();
 
     @Builder
