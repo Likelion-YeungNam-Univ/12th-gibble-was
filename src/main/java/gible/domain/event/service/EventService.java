@@ -31,17 +31,23 @@ public class EventService {
 
     /* 이벤트 목록 조회 */
     @Transactional(readOnly = true)
-    public Page<EventSummaryRes> getAllEvents(Pageable pageable) {
-
-        Page<Event> events = eventRepository.findAll(pageable);
+    public Page<EventSummaryRes> getAllEvents(Pageable pageable, String search) {
+        if(search == null) {
+            Page<Event> events = eventRepository.findAll(pageable);
+            return events.map(EventSummaryRes::fromEntity);
+        }
+        Page<Event> events = eventRepository.findByTitleContaining(search, pageable);
         return events.map(EventSummaryRes::fromEntity);
     }
 
     /* 이벤트 목록 조회 (지역별) */
     @Transactional(readOnly = true)
-    public Page<EventSummaryRes> getAllEventsByRegion(Region region, Pageable pageable) {
-
-        Page<Event> events = eventRepository.findByRegion(region, pageable);
+    public Page<EventSummaryRes> getAllEventsByRegion(Region region, Pageable pageable, String search) {
+        if(search == null) {
+            Page<Event> events = eventRepository.findByRegion(region, pageable);
+            return events.map(EventSummaryRes::fromEntity);
+        }
+        Page<Event> events = eventRepository.findByRegionAndTitleContaining(region, pageable, search);
         return events.map(EventSummaryRes::fromEntity);
     }
 

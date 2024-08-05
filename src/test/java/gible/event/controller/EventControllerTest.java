@@ -130,7 +130,7 @@ public class EventControllerTest {
                 EventSummaryRes.fromEntity(event2)
         ));
 
-        given(eventService.getAllEvents(any(Pageable.class))).willReturn(events);
+        given(eventService.getAllEvents(any(Pageable.class), null)).willReturn(events);
 
         // when
         ResultActions resultActions = mockMvc.perform(

@@ -93,7 +93,7 @@ public class EventServiceTest {
         when(eventRepository.findAll(pageable)).thenReturn(events);
 
         // when
-        Page<EventSummaryRes> eventSummaryPage = eventService.getAllEvents(pageable);
+        Page<EventSummaryRes> eventSummaryPage = eventService.getAllEvents(pageable, null);
 
         // then
         assertNotNull(eventSummaryPage);

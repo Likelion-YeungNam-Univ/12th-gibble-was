@@ -37,11 +37,13 @@ public class EventController implements EventApi {
     @GetMapping
     public ResponseEntity<?> getAllEvents(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 12) Pageable pageable,
-            @RequestParam(name = "region", required = false) Region region) {
+            @RequestParam(name = "region", required = false) Region region,
+            @RequestParam(name = "search", required = false) String search
+    ) {
 
         if (region == null)
-            return ResponseEntity.ok().body(eventService.getAllEvents(pageable));
-        return ResponseEntity.ok().body(eventService.getAllEventsByRegion(region, pageable));
+            return ResponseEntity.ok().body(eventService.getAllEvents(pageable, search));
+        return ResponseEntity.ok().body(eventService.getAllEventsByRegion(region, pageable, search));
     }
 
     /* 특정 이벤트 조회 */

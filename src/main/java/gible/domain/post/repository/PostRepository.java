@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    Page<Post> findByTitleContaining(String search, Pageable pageable);
+    Page<Post> findByTitleContaining(String title, Pageable pageable);
     List<Post> findByWriter_Id(UUID userId);
 
     @Query("SELECT p.writer.id FROM Post p WHERE p.id = :postId")

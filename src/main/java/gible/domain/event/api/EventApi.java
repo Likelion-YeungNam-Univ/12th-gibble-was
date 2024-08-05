@@ -87,7 +87,9 @@ public interface EventApi {
     })
     ResponseEntity<?> getAllEvents(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 12) Pageable pageable,
-            @RequestParam(name = "region", required = false) Region region);
+            @RequestParam(name = "region", required = false) Region region,
+            @RequestParam(name = "search", required = false) String search
+            );
 
     @Operation(summary = "특정 이벤트 조회", description = "특정 이벤트에 대한 조회하기 위한 API")
     @ApiResponses({

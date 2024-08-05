@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface EventRepository extends JpaRepository<Event, UUID> {
 
     Page<Event> findByRegion(Region region, Pageable pageable);
+
+    Page<Event> findByTitleContaining(String search, Pageable pageable);
+
+    Page<Event> findByRegionAndTitleContaining(Region region, Pageable pageable, String title);
 }
