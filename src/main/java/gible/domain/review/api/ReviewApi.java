@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -73,7 +74,8 @@ public interface ReviewApi {
             )
     })
     ResponseEntity<?> getReviews(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(name = "search", required = false) String search
     );
 
     @Operation(summary = "특정 리뷰 조회", description = "특정 리뷰에 대한 조회하기 위한 API")

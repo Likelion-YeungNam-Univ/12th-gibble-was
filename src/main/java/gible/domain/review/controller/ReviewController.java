@@ -27,9 +27,13 @@ public class ReviewController implements ReviewApi {
     @Override
     @GetMapping("")
     public ResponseEntity<?> getReviews(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(name = "search", required = false) String search
     ) {
-        return ResponseEntity.ok(reviewService.getReviews(pageable));
+        if(search == null) {
+            return ResponseEntity.ok(reviewService.getReviews(pageable));
+        }
+        return ResponseEntity.ok(reviewService.getReviewsByKeyword(pageable, search));
     }
 
     /* 리뷰 가져오기 */

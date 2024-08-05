@@ -31,6 +31,11 @@ public class ReviewService {
         return reviewRepository.findAll(pageable).map(ReviewSummaryRes::fromEntity);
     }
 
+    public Page<ReviewSummaryRes> getReviewsByKeyword(Pageable pageable, String search) {
+        Page<Review> searchReviews = reviewRepository.findByTitleContaining(search, pageable);
+        return searchReviews.map(ReviewSummaryRes::fromEntity);
+    }
+
     @Transactional(readOnly = true)
     public ReviewDetailRes getReview(UUID userId, UUID reviewId) {
 
@@ -40,7 +45,6 @@ public class ReviewService {
         boolean isPermitted = userId.equals(foundReview.getWriter().getId());
         return ReviewDetailRes.fromEntity(foundReview, isPermitted);
     }
-
     @Transactional
     public ReviewUploadRes uploadReview(UUID userId, ReviewReq reviewReq) {
         User user = userService.findById(userId);
@@ -55,4 +59,5 @@ public class ReviewService {
         reviewDao.delete(review.getReviewImageId());
         reviewRepository.delete(review);
     }
+
 }
