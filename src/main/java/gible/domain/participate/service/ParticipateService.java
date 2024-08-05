@@ -28,6 +28,10 @@ public class ParticipateService {
     @Transactional
     public void participationEvent(UUID userId, UUID eventId) {
 
+        if (participateRepository.existsByUser_IdAndEvent_Id(userId, eventId)) {
+            throw new CustomException(ErrorType.ALREADY_PARTICIPATE_POST);
+        }
+
         User foundUser = userRepository.findById(userId).orElseThrow(() ->
                 new CustomException(ErrorType.USER_NOT_FOUND));
 
