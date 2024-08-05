@@ -72,7 +72,7 @@ public class PostController implements PostApi {
     public ResponseEntity<?> updatePost(@Valid @RequestBody PostReq postReq,
                                         @PathVariable UUID postId) {
 
-        return ResponseEntity.ok(postService.updatePost(postReq, postId););
+        return ResponseEntity.ok(postService.updatePost(postReq, postId));
     }
 
     /* 게시글 삭제 */
