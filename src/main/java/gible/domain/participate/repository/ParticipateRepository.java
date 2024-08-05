@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface ParticipateRepository extends JpaRepository<Participate, UUID> {
 
     List<Participate> findByUser_Id(UUID userId);
+    boolean existsByUser_IdAndEvent_Id(UUID userId, UUID postId);
 }
