@@ -119,12 +119,14 @@ public class PostService {
     /* 게시글 수정 */
     @AuthenticatedUser
     @Transactional
-    public void updatePost(PostReq postReq, UUID postId) {
+    public PostUploadRes updatePost(PostReq postReq, UUID postId) {
 
         Post foundPost = postRepository.findById(postId).orElseThrow(() ->
                 new CustomException(ErrorType.POST_NOT_FOUND));
 
         foundPost.updatePost(postReq);
+
+        return PostUploadRes.from(foundPost.getId());
     }
 
     /* 게시글 삭제 */
