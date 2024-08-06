@@ -37,7 +37,8 @@ public class WebSecurityConfig {
                                         "/user",
                                         "/webjars/**",
                                         "/error",
-                                        "/auth/logout"
+                                        "/auth/logout",
+                                        "/user/dupCheck"
                                 ).permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(exception-> exception.authenticationEntryPoint(authenticationEntryPoint))
