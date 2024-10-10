@@ -8,6 +8,9 @@
 
 ## 기능
 
+### 헌혈증 기부 요청글 등록 및 헌혈증 기부
+![image](https://github.com/user-attachments/assets/e586180d-c2c2-4d72-b114-9a4f53f70c67)
+
 ### 기부내역 공개
 
 ![image](https://github.com/user-attachments/assets/ab0f5a10-cb3a-4844-9e9f-aed8a56e80b9)
